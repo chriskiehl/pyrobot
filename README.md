@@ -50,29 +50,13 @@ Doc
 |def mouse_down(self, button): | Presses one mouse button. Left, right, or middle|
 |def mouse_up(self, button): | Releases mouse button. Left, right, or middle|
 |def click(self, button): | Simulates a full mouse click. One down event, one up event. |
-|def scroll_mouse_wheel(self, direction, clicks):  | Scrolls the mouse wheel either up or down X number of 'clicks' 
-		direction: String: 'up' or 'down'
-
-		clicks: int: how many times to click|
-
+|def scroll_mouse_wheel(self, direction, clicks):  | Scrolls the mouse wheel either up or down X number of 'clicks'. |
 |def add_to_clipboard(self, string):  | Copy text into clip board for later pasting. |
 |def clear_clipboard(self): | Clear everything out of the clipboard|
-|def take_screenshot(self): | NOTE:
-			REQUIRES: PYTHON IMAGE LIBRARY
-
-		Takes a snapshot of desktop and loads it into memory as a PIL object. 
-		
-		TODO: 
-			* Add multimonitor support |
+|def take_screenshot(self): | NOTE: REQUIRES: PYTHON IMAGE LIBRARY| Takes a snapshot of desktop and loads it into memory |
 |def key_press(self, key): | Pesses a given key. |
 |def key_release(self, key): | Releases a given key. |
-|def type_string(self, input_string, delay=.005): | Convenience function for typing out stings. 
-		Delay controls the time between each letter. 
-
-		For the most part, large tests should be pushed
-		into the clipboard and pasted where needed. However, 
-		they typing serves the useful purpose of looking neat. |
-		
+|def type_string(self, input_string, delay=.005): | Convenience function for typing out stings. |
 |def type_backwards(self, input_string, delay=.05): | Types right to left. Beacuse why not! |
 
 
