@@ -38,3 +38,5 @@ nosetests.xml
 .cpp
 .c
 .h
+
+examples
