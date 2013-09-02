@@ -5,6 +5,7 @@ A pure python windows automation library loosely modeled after Java's Robot Clas
 '''
 
 import sys
+import time
 import ctypes 
 from ctypes import *
 from ctypes.wintypes import *
