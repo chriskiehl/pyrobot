@@ -59,8 +59,10 @@ Doc
 |def type_string(self, input_string, delay=.005): | Convenience function for typing out stings. |
 |def type_backwards(self, input_string, delay=.05): | Types right to left. Beacuse why not! |
 
+Special take_snapshot Note
+-----------------------  
 
-
+Being that Python has no built in Image library (That I know of), it seemed of little use to include a snapshot method which simply saved the picture to disk. For 90% of program automation, I find that querying pixels works fairly well (`robot.get_pixel`). However, if you need to do more advanced display searching, or want to do template matching, you'll need an external library. So there is a method in there to contruct a PIL Image object. It just, of course, requires that PIL be installed. Other than that, dependency free! :-)
 
 Contact
 -------
