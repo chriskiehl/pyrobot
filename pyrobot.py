@@ -191,7 +191,21 @@ class Robot(object):
 			*self.release_events[button.lower()]
 		)
 
+	def click(self, button):
+		'''
+		Simulates a full mouse click. One down event, one up event. 
+		'''
+		self.mouse_down(button)
+		self.mouse_up(button)
+
 	def scroll_mouse_wheel(self, direction, clicks): 
+		'''
+		Scrolls the mouse wheel either up or down X number of 'clicks'
+
+		direction: String: 'up' or 'down'
+
+		clicks: int: how many times to click
+		'''
 		for num in range(clicks):
 			self._scrollup() if direction.lower() == 'up' else self._scrolldown()
 
@@ -227,6 +241,9 @@ class Robot(object):
 		# Technologic
 
 	def clear_clipboard(self):
+		'''
+		Clear everything out of the clipboard
+		'''
 		windll.user32.OpenClipboard(None)
 		windll.user32.EmptyClipboard()
 		windll.user32.CloseClipboard()
