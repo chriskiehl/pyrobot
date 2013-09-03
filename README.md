@@ -57,7 +57,7 @@ Doc
 | key_press(self, key): | Presses a given key. |
 | key_release(self, key): | Releases a given key. |
 | type_string(self, input_string, delay=.005): | Convenience function for typing out strings. |
-| type_backwards(self, input_string, delay=.05): | Types right to left. Beacuse why not! |
+| type_backwards(self, input_string, delay=.05): | Types right to left. Because why not! |
 
 Special take_snapshot Note
 -----------------------  
