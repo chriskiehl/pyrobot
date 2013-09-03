@@ -32,7 +32,7 @@ pixel = robot.get_pixel(340,400)
 if pixel == ((255,255,255)): 
 	robot.set_mouse_pos(340,400)
 	robot.click()
-	robot.push_to_clipboard('Hello world! How are ya!")
+	robot.add_to_clipboard('Hello world! How are ya!")
 	robot.paste()
 
 # etc.. 
