@@ -45,7 +45,7 @@ Doc
 | Method                                | Summary                    |
 | --------------------------------------|-----------------------------
 | set_mouse_pos(self, x, y): | Moves mouse pointer to given screen coordinates. |
-| get_mouse_pos(self): 		| returns current mouse coordinates |
+| get_mouse_pos(self): 		| Returns current mouse coordinates |
 | get_pixel(self, x, y): 	| Returns the pixel color of the given screen coordinate|
 | mouse_down(self, button): | Presses one mouse button. Left, right, or middle|
 | mouse_up(self, button):	 | Releases mouse button. Left, right, or middle|
