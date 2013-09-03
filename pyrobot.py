@@ -154,7 +154,7 @@ class Robot(object):
 
 	def get_mouse_pos(self):
 		'''
-		returns current mouse coordinates
+		Returns current mouse coordinates
 		'''
 		coords = pointer(c_long(0))
 		windll.user32.GetCursorPos(coords)
@@ -365,7 +365,7 @@ class Robot(object):
 
 	def type_string(self, input_string, delay=.005):
 		'''
-		Convenience function for typing out stings. 
+		Convenience function for typing out strings. 
 		Delay controls the time between each letter. 
 
 		For the most part, large tests should be pushed
@@ -391,7 +391,7 @@ class Robot(object):
 
 	def type_backwards(self, input_string, delay=.05):
 		'''
-		Types right to left. Beacuse why not! 
+		Types right to left. Because why not! 
 		'''
 		for letter in reversed(input_string):
 			self._handle_input(letter)
