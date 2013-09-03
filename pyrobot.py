@@ -401,8 +401,18 @@ class Robot(object):
 
 
 if __name__ == '__main__':
-	import time 
+	time.sleep(1)
 	robot = Robot()
+	robot.type_backwards('Hello World!')
+
+
+
+
+
+
+
+
+
 
 
 
