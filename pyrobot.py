@@ -150,7 +150,7 @@ class Robot(object):
 		'''
 		Moves mouse pointer to given screen coordinates.
 		'''
-		windll.user32.SetCursorPos(0,0)
+		windll.user32.SetCursorPos(x,y)
 
 	def get_mouse_pos(self):
 		'''
