@@ -3,6 +3,12 @@
 A pure python windows automation library loosely modeled after Java's Robot Class.
 
 
+TODO: 
+	* Finish EnumDisplayMonitors func. Complete multi-mon support. 
+	* Allow window targeting.
+
+
+
 I can never remember how these map... 
 ----  LEGEND ----
 
@@ -18,6 +24,9 @@ UNIT_PTR  = c_ulong
 SIZE_T    = c_ulong
 
 '''
+
+
+
 
 
 import sys
@@ -272,6 +281,7 @@ class Robot(object):
 		
 		TODO: 
 			* Add multimonitor support
+
 		'''
 
 		try: 
@@ -488,8 +498,9 @@ def draw_pixels(rgb_value):
 def _enumerate_windows():
 	'''
 	Loops through the titles of all the "windows."
-	Spits out too much data to be of use. Keeping it 
-	here to remind me how the ctypes callbacks work. 
+	Spits out too much junk to to be of immidiate use. 
+	Keeping it 	here to remind me how the ctypes 
+	callbacks work. 
 	'''
 
 	titles = []
@@ -520,9 +531,30 @@ def _enumerate_windows():
 
 
 if __name__ == '__main__':
-	robot = Robot()
-	robot.start_program('C:\Program Files\Internet Explorer\iexplore.exe')
-	# _enumerate_windows()
+
+	def monitorEnumProc(hMonitor, hdcMonitor, lprcMonitor, dwData):
+		print hMonitor, hdcMonitor, lprcMonitor, dwData
+		print lprcMonitor[0].left
+		print lprcMonitor[0].top
+		print lprcMonitor[0].right
+		print lprcMonitor[0].bottom
+		print
+
+	MonitorEnumProc = WINFUNCTYPE(
+		ctypes.c_bool, 
+		ctypes.wintypes.HMONITOR,
+		ctypes.wintypes.HDC,
+		ctypes.POINTER(RECT),
+		ctypes.wintypes.LPARAM
+	)
+
+	enum_callback = MonitorEnumProc(monitorEnumProc)
+	windll.user32.EnumDisplayMonitors(
+		None, 
+		None,
+		enum_callback,
+		0
+		)
 
 
 
