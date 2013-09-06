@@ -58,8 +58,7 @@ Doc
 | key_release(key): | Releases a given key. |
 | type_string(input_string, delay=.005): | Convenience function for typing out strings. |
 | type_backwards(input_string, delay=.05): | Types right to left. Because why not! |
-| start_program(full_path) | Starts a windows applications.  |
-		'''
+| start_program(full_path) | Launches a windows application.  |  
 
 
 Special take_snapshot Note
