@@ -2,7 +2,23 @@
 
 A pure python windows automation library loosely modeled after Java's Robot Class.
 
+
+I can never remember how these map... 
+----  LEGEND ----
+
+BYTE      = c_ubyte
+WORD      = c_ushort
+DWORD     = c_ulong
+LPBYTE    = POINTER(c_ubyte)
+LPTSTR    = POINTER(c_char) 
+HANDLE    = c_void_p
+PVOID     = c_void_p
+LPVOID    = c_void_p
+UNIT_PTR  = c_ulong
+SIZE_T    = c_ulong
+
 '''
+
 
 import sys
 import time
@@ -12,10 +28,6 @@ from ctypes.wintypes import *
 
 
 
-
-# WORD 	:	ctypes.c_short
-# DWORD : ctypes.c_uint32
-# LONG 	: ctypes.c_int
 class WIN32CON(object):
 	def __init__(self):
 		self.LEFT_DOWN = 0x0002
@@ -399,138 +411,116 @@ class Robot(object):
 			self.key_release('left_arrow')
 			time.sleep(delay)
 
+	def start_program(self, full_path):
+		class STARTUPINFO(ctypes.Structure):
+			_fields_ = [
+			('cb', c_ulong),
+			('lpReserved', POINTER(c_char)),
+			('lpDesktop', POINTER(c_char)),
+			('lpTitle', POINTER(c_char)),
+			('dwX', c_ulong),
+			('dwY', c_ulong),
+			('dwXSize', c_ulong),
+			('dwYSize', c_ulong),
+			('dwXCountChars', c_ulong),
+			('dwYCountChars', c_ulong),
+			('dwFillAttribute', c_ulong),
+			('dwFlags', c_ulong),
+			('wShowWindow', c_ushort),
+			('cbReserved2', c_ushort),
+			('lpReserved2', POINTER(c_ubyte)),
+			('hStdInput', c_void_p),
+			('hStdOutput', c_void_p),
+			('hStdError', c_void_p)
+		]
+		class PROCESS_INFORMATION(ctypes.Structure):
+			_fields_ = [
+				('hProcess', c_void_p),
+				('hThread', c_void_p),
+				('dwProcessId', c_ulong),
+				('dwThreadId', c_ulong),
+			]
+		NORMAL_PRIORITY_CLASS = 0x00000020
+		
+		startupinfo = STARTUPINFO()
+		processInformation = PROCESS_INFORMATION()
+		
+		windll.kernel32.CreateProcessA(
+			full_path, 
+			None, 
+			None,
+			None,
+			True,
+			0,
+			None, 
+			None,
+			byref(startupinfo),
+			byref(processInformation)
+			)
+
+
+
+def _convert_rgb(r, g, b):
+    r = r & 0xFF
+    g = g & 0xFF
+    b = b & 0xFF
+    return (b << 16) | (g << 8) | r
+
+def draw_pixels(rgb_value):
+	rgb = _convert_rgb(*rgb_value)
+	hdc = windll.user32.GetDC(None)
+	rgb = make_rgb(255,255,255)
+	for i in range(50):
+		print windll.gdi32.SetPixel(
+			hdc, 
+			c_int(200 + i),
+			c_int(200 + i),
+			rgb
+		)
+	time.sleep(5)
+
+
+def _enumerate_windows():
+	'''
+	Loops through the titles of all the "windows."
+	Spits out too much data to be of use. Keeping it 
+	here to remind me how the ctypes callbacks work. 
+	'''
+
+	titles = []
+	def enumWindowsProc(hwnd, lParam):
+		# print hwnd, lParam
+		l = windll.user32.GetWindowTextLengthA(hwnd)
+		title = create_string_buffer(l + 1)
+		windll.user32.GetWindowTextA(
+			hwnd, 
+			title,
+			l + 1
+			)
+
+		titles.append(''.join(title))
+
+	BoolEnumWindowsProc = WINFUNCTYPE(
+		ctypes.c_bool, 
+		ctypes.wintypes.HWND, 
+		ctypes.wintypes.LPARAM 
+		)
+
+
+	mycallback = BoolEnumWindowsProc(enumWindowsProc)
+	print windll.user32.EnumWindows(mycallback, 0)
+	titles = [t for t in titles if t is not None]
+	for i in titles:
+		print i
+
 
 if __name__ == '__main__':
-	time.sleep(1)
 	robot = Robot()
-	robot.type_backwards('Hello World!')
+	robot.start_program('C:\Program Files\Internet Explorer\iexplore.exe')
+	# _enumerate_windows()
 
 
 
 
 
 
-
-
-
-
-
-
-# stock codes: "+", ",", "-", "." 
-
-
-
-
-
-#			 	Figuring out stuff below here					# 
-# ------------------------------------------------------------- #
-
-# print get_pixel(*get_mouse_pos())
-# robot = Robot()
-# import time
-# time.sleep(1)
-# robot.key_press('a')
-# time.sleep(5)
-# time.sleep(2)
-# robot.scroll_mouse_wheel('down', 10)
-# for i in dir(ctypes): print i
-# SM_CMONITORS = 80
-# SM_XVIRTUALSCREEN = 76
-# SM_CXVIRTUALSCREEN = 78
-# def get_total_displays 
-# print windll.user32.GetSystemMetrics(SM_CMONITORS)
-# print windll.user32.GetSystemMetrics(16)
-
-# SM_CXSCREEN = 0 # Width of primary screen
-# SM_CYSCREEN = 1 # Height of the primary screen
-
-
-# libc = ctypes.cdll.msvcrt
-
-# # handle to the entire desktop Window
-# hdc = windll.user32.GetDC(None)
-
-# # DC for the entire window
-# h_dest = windll.gdi32.CreateCompatibleDC(hdc)
-
-# width = windll.user32.GetSystemMetrics(SM_CXSCREEN)
-# height = windll.user32.GetSystemMetrics(SM_CYSCREEN)
-
-# hb_desktop = windll.gdi32.CreateCompatibleBitmap(hdc, width, height)
-# windll.gdi32.SelectObject(h_dest, hb_desktop)
-
-# print windll.gdi32.BitBlt(h_dest, 0,0, width, height, hdc, 0, 0, 'SRCCOPY')
-
-
-
-# hCaptureBitmap = _get_screen_buffer()
-# im = _make_image_from_buffer(hCaptureBitmap)
-# im.save('image.bmp', 'bmp')
-
-
-
-
-
-# BI_RGB = 0
-# bmp_info.bmiHeader.biCompression = BI_RGB
-# print windll.gdi32.GetDIBits(hdc, hCaptureBitmap, 0, bmp_info.bmiHeader.biHeight, pBuf, byref(bmp_info), 0x00)
-
-# bmp_header.bfReserved1 = 0
-# bmp_header.bfReserved2 = 0
-
-# bmp_header.bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + bmp_info.bmiHeader.biSizeImage
-# bmp_header.bfType = 0x4D42
-
-# bmp_header.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER)
-
-# # fp = libc.fopen('test.bmp',"wb")
-
-# # libc.fwrite(byref(bmp_header), sizeof(BITMAPFILEHEADER), 1, fp)
-
-# # libc.fwrite(byref(bmp_info.bmiHeader), 
-# # 	sizeof(BITMAPFILEHEADER), 1, fp)
-
-# # libc.fwrite(pBuf, bmp_info.bmiHeader.biSizeImage, 1, fp)
-
-# with open('test1.bmp', 'wb') as f:
-# 	f.write(bmp_header)
-# 	f.write(bmp_info.bmiHeader)
-# 	f.write(pBuf)
-
-# END Previous attempt
-# ###############################
-
-
-
-# Half finished
-# #############################
-# bmpScreen = BITMAP()
-# hbmScreen = hCaptureBitmap
-
-# print windll.gdi32.GetObjectA(hbmScreen, sizeof(BITMAP), byref(bmpScreen))
-
-# bmfHeader = BITMAPFILEHEADER()
-# bi = BITMAPINFOHEADER()
-
-# bi.biSize = sizeof(BITMAPINFOHEADER)
-# bi.biWidth = bmpScreen.bmWidth
-# bi.biHeight = bmpScreen.bmHeight
-# bi.biPlanes = 1
-# bi.biBitCount = 32
-# bi.biCompression = 0
-# bi.biSizeImage = 0
-# bi.biXPelsPerMeter = 0
-# bi.biYPelsPerMeter = 0
-# bi.biClrUsed = 0
-# bi.biClrImportant = 0
-
-# dwBmpSize = ((bmpScreen.bmWidth * bi.biBitCount + 31) / 32) * 4 * bmpScreen.bmHeight
-# GHND = 0x0042
-# hDIB = windll.user32.GlobalAlloc(GHND, dwBmpSize)
-# END
-
-
-
-
-# 						END 							#
-# ----------------------------------------------------- #
