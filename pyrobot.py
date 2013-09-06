@@ -412,6 +412,11 @@ class Robot(object):
 			time.sleep(delay)
 
 	def start_program(self, full_path):
+		'''
+		Starts a windows applications. Must pass in full path 
+		to the exe, otherwise it will fail. 
+		'''
+
 		class STARTUPINFO(ctypes.Structure):
 			_fields_ = [
 			('cb', c_ulong),
