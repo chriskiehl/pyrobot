@@ -44,20 +44,23 @@ Doc
    
 | Method                                | Summary                    |
 | --------------------------------------|-----------------------------
-| set_mouse_pos(self, x, y): | Moves mouse pointer to given screen coordinates. |
-| get_mouse_pos(self): 		| Returns current mouse coordinates |
-| get_pixel(self, x, y): 	| Returns the pixel color of the given screen coordinate|
-| mouse_down(self, button): | Presses one mouse button. Left, right, or middle|
-| mouse_up(self, button):	 | Releases mouse button. Left, right, or middle|
-| click(self, button): 	| Simulates a full mouse click. One down event, one up event. |
-| scroll_mouse_wheel(self, direction, clicks):  | Scrolls the mouse wheel either up or down X number of 'clicks'. |
-| add_to_clipboard(self, string):  | Copy text into clip board for later pasting. |
-| clear_clipboard(self): | Clear everything out of the clipboard|
-| take_screenshot(self): | NOTE: REQUIRES: PYTHON IMAGE LIBRARY| Takes a snapshot of desktop and loads it into memory |
-| key_press(self, key): | Presses a given key. |
-| key_release(self, key): | Releases a given key. |
-| type_string(self, input_string, delay=.005): | Convenience function for typing out strings. |
-| type_backwards(self, input_string, delay=.05): | Types right to left. Because why not! |
+| set_mouse_pos(x, y): | Moves mouse pointer to given screen coordinates. |
+| get_mouse_pos(): 		| Returns current mouse coordinates |
+| get_pixel(x, y): 	| Returns the pixel color of the given screen coordinate|
+| mouse_down(button): | Presses one mouse button. Left, right, or middle|
+| mouse_up(button):	 | Releases mouse button. Left, right, or middle|
+| click(button): 	| Simulates a full mouse click. One down event, one up event. |
+| scroll_mouse_wheel(), direction, clicks):  | Scrolls the mouse wheel either up or down X number of 'clicks'. |
+| add_to_clipboard(string):  | Copy text into clip board for later pasting. |
+| clear_clipboard(): | Clear everything out of the clipboard|
+| take_screenshot(): | NOTE: REQUIRES: PYTHON IMAGE LIBRARY| Takes a snapshot of desktop and loads it into memory |
+| key_press(key): | Presses a given key. |
+| key_release(key): | Releases a given key. |
+| type_string(input_string, delay=.005): | Convenience function for typing out strings. |
+| type_backwards(input_string, delay=.05): | Types right to left. Because why not! |
+| start_program(full_path) | Starts a windows applications.  |
+		'''
+
 
 Special take_snapshot Note
 -----------------------  
