@@ -27,13 +27,20 @@ from pyrobot import Robot
 # create an instance of the class
 robot = Robot()
 
+# Launch a program
+robot.start_program('program_name') 
+
 # Do cool stuff
-pixel = robot.get_pixel(340,400)
-if pixel == ((255,255,255)): 
-	robot.set_mouse_pos(340,400)
-	robot.click()
-	robot.add_to_clipboard('Hello world! How are ya!")
+location_of_field = (340, 400)
+expected_color = (255,255,255)
+
+pixel = robot.get_pixel(location_of_field)
+if pixel == (expected_color): 
+	robot.set_mouse_pos(location_of_field)
+	robot.click('left')
+	robot.add_to_clipboard('Hello world! How are ya!')
 	robot.paste()
+
 
 # etc.. 
 
@@ -45,12 +52,12 @@ Doc
 | Method                                | Summary                    |
 | --------------------------------------|-----------------------------
 | set_mouse_pos(x, y): | Moves mouse pointer to given screen coordinates. |
-| get_mouse_pos(): 		| Returns current mouse coordinates |
-| get_pixel(x, y): 	| Returns the pixel color of the given screen coordinate|
-| mouse_down(button): | Presses one mouse button. Left, right, or middle|
-| mouse_up(button):	 | Releases mouse button. Left, right, or middle|
-| click(button): 	| Simulates a full mouse click. One down event, one up event. |
-| scroll_mouse_wheel(), direction, clicks):  | Scrolls the mouse wheel either up or down X number of 'clicks'. |
+| get_mouse_pos(): 		| Returns tuple of current mouse coordinates |
+| get_pixel(x, y): 	| Returns the pixel color `tuple(R,G,B)` of the given screen coordinate|
+| mouse_down(button): | Presses one mouse button. <br>    keywords: `button`:<br>    values: 'Left', 'right', or 'middle' |
+| mouse_up(button):	 | Releases mouse button. String: 'Left', 'right', or 'middle' |
+| click(button): 	| Simulates a full mouse click. One down event, one up event. String: 'left', 'right', 'middle' |
+| scroll_mouse_wheel(direction, clicks):  | Scrolls the mouse wheel either up or down X number of 'clicks'. |
 | add_to_clipboard(string):  | Copy text into clip board for later pasting. |
 | clear_clipboard(): | Clear everything out of the clipboard|
 | take_screenshot(): | NOTE: REQUIRES: PYTHON IMAGE LIBRARY| Takes a snapshot of desktop and loads it into memory |
