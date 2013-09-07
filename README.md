@@ -46,7 +46,7 @@ if pixel == (expected_color):
 
 # If you need to take screengrabs, and have PIL Installed, 
 # PyRobot extends the default behavior of PIL by 
-# allowing all entire virtual screen to be targeted (rather 
+# allowing the entire virtual screen to be targeted (rather 
 # than just the primary). 
 
 # returns a list of screen rects for all attached devices
@@ -84,8 +84,8 @@ Doc
 | scroll_mouse_wheel(direction, clicks)  | Scrolls the mouse wheel either `'up'` or `'down'` X number of 'clicks'. |
 | add_to_clipboard(string)  | Copy text into clip board for later pasting. |
 | clear_clipboard() | Clear everything out of the clipboard |
-| take_screenshot(bounds=None) | NOTE: REQUIRES PYTHON IMAGE LIBRARY<br>Takes a screenshot of the entire desktop and returns it as a PIL `Image` object.<br>Use with `get_display_monitors` to target a specific screen, or pass in a tuple consisting of (`left`, `top`, `width`, `height`).|
-| key_press(key) | Presses a given key.<br>Input: `string'|
+| take_screenshot(bounds=None) | NOTE: REQUIRES PYTHON IMAGE LIBRARY<br>Takes a screenshot of the entire desktop and returns it as a PIL `Image` object.<br><br>Use with `get_display_monitors` to target a specific screen, or pass in a tuple consisting of (`left`, `top`, `width`, `height`).|
+| key_press(key) | Presses a given key.<br>Input: `string`|
 | key_release(key) | Releases a given key.<br>Input: `string` |
 | type_string(input_string, delay=.005) | Convenience function for typing out strings.<br>delay = time between keystrokes |
 | type_backwards(input_string, delay=.05) | Types right to left. Because why not! |
