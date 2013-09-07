@@ -68,7 +68,7 @@ Doc
 | type_backwards(input_string, delay=.05) | Types right to left. Because why not! |
 | start_program(full_path) | Launches a windows application. <br>Input type: `string`|  
 | paste() | Pastes the contents of the clipboard |
-| sleep() | Pauses the robot for `duration` number of seconds. |
+| sleep(duration) | Pauses the robot for `duration` number of seconds. |
 
 
 
