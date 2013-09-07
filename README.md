@@ -53,20 +53,20 @@ Doc
 | Method                                | Summary                    |
 | --------------------------------------|-----------------------------
 | set_mouse_pos(x, y): | Moves mouse pointer to given screen coordinates. |
-| get_mouse_pos(): 		| Returns tuple of current mouse coordinates |
-| get_pixel(x, y): 	| Returns the pixel color `tuple(R,G,B)` of the given screen coordinate|
-| mouse_down(button): | Presses one mouse button. Accepted Button values:  string: `'Left'`, `'right'`, `'middle'` |
-| mouse_up(button):	 | Releases mouse button. String: 'Left', 'right', or 'middle' |
-| click(button): 	| Simulates a full mouse click. One down event, one up event. String: 'left', 'right', 'middle' |
-| scroll_mouse_wheel(direction, clicks):  | Scrolls the mouse wheel either up or down X number of 'clicks'. |
-| add_to_clipboard(string):  | Copy text into clip board for later pasting. |
-| clear_clipboard(): | Clear everything out of the clipboard|
-| take_screenshot(): | NOTE: REQUIRES: PYTHON IMAGE LIBRARY| Takes a snapshot of desktop and loads it into memory |
-| key_press(key): | Presses a given key. |
-| key_release(key): | Releases a given key. |
-| type_string(input_string, delay=.005): | Convenience function for typing out strings. |
-| type_backwards(input_string, delay=.05): | Types right to left. Because why not! |
-| start_program(full_path) | Launches a windows application.  |  
+| get_mouse_pos() 		| Returns tuple of current mouse coordinates |
+| get_pixel(x, y) 	| Returns the pixel color `tuple(R,G,B)` of the given screen coordinate|
+| mouse_down(button) | Presses one mouse button.<br> button can be `'Left'`, `'right'`, or `'middle'` |
+| mouse_up(button)	 | Releases mouse button.<br> button can be `'Left'`, `'right'`, or `'middle'` |
+| click(button) 	| Simulates a full mouse click. One down event, one up event.<br> button can be `'Left'`, `'right'`, or `'middle'` |
+| scroll_mouse_wheel(direction, clicks)  | Scrolls the mouse wheel either `'up'` or `'down'` X number of 'clicks'. |
+| add_to_clipboard(string)  | Copy text into clip board for later pasting. |
+| clear_clipboard() | Clear everything out of the clipboard |
+| take_screenshot() | NOTE REQUIRES PYTHON IMAGE LIBRARY<br>Takes a snapshot of desktop and returns it as a PIL `Image` object |
+| key_press(key) | Presses a given key.<br>Input: `string'|
+| key_release(key) | Releases a given key.<br>Input: `string' |
+| type_string(input_string, delay=.005) | Convenience function for typing out strings.<br>delay = time between keystrokes |
+| type_backwards(input_string, delay=.05) | Types right to left. Because why not! |
+| start_program(full_path) | Launches a windows application. <br>Input type: `string`|  
 
 
 Special take_snapshot Note
