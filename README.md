@@ -49,47 +49,13 @@ if pixel == (expected_color):
 Doc  
 ---  
 
-<table>
-	<tr>
-		<th>Method Name</th>
-		<th>Summary</th>		
-	</tr>
-	<tr>
-		<td><b>set_mouse_pos(<i>x, y</i>)</b></td>
-		<td>Moves mouse pointer to given screen coordinates.</td>		
-	</tr>
 
-	<tr>
-		<td><b>get_mouse_pos()</b></td>
-		<td>Returns tuple of current mouse coordinates</td>		
-	</tr>
-
-	<tr>
-		<td><b>get_pixel(<i>x, y</i>)</b></td>
-		<td>Returns the RGB value for the pixel at the given screen coordinate</td>		
-	</tr>
-	<tr>
-		<td><b>mouse_down(<i>button</i>)</b></td>
-		<td>Presses one mouse button.<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;keyword: `button`:<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;type: `string`:<br>
-		&nbsp;&nbsp;&nbsp;&nbsp;Values: `string`:<br>  
-
-		* 'Left'
-		* 'right'
-		* 'middle'
-		</td>		
-	</tr>
-</table>
-
-
-   
 | Method                                | Summary                    |
 | --------------------------------------|-----------------------------
 | set_mouse_pos(x, y): | Moves mouse pointer to given screen coordinates. |
 | get_mouse_pos(): 		| Returns tuple of current mouse coordinates |
 | get_pixel(x, y): 	| Returns the pixel color `tuple(R,G,B)` of the given screen coordinate|
-| mouse_down(button): | Presses one mouse button. <br>    keywords: `button`:<br>    values: * 'Left' * 'right', * 'middle' |
+| mouse_down(button): | Presses one mouse button. Accepted Button values:  string: `'Left'`, `'right'`, `'middle'` |
 | mouse_up(button):	 | Releases mouse button. String: 'Left', 'right', or 'middle' |
 | click(button): 	| Simulates a full mouse click. One down event, one up event. String: 'left', 'right', 'middle' |
 | scroll_mouse_wheel(direction, clicks):  | Scrolls the mouse wheel either up or down X number of 'clicks'. |
