@@ -276,7 +276,7 @@ class Robot(object):
 	def _get_monitor_coordinates(self):
 		raise NotImplementedError(".. still working on things :)")
 	
-	def take_screenshot(self):
+	def take_screenshot(self, bounds=None):
 		'''
 		NOTE:
 			REQUIRES: PYTHON IMAGE LIBRARY
@@ -295,24 +295,52 @@ class Robot(object):
 			print "Need to have PIL installed! See: effbot.org for download"
 			sys.exit()
 
-		return self._make_image_from_buffer(self._get_screen_buffer())
+		return self._make_image_from_buffer(self._get_screen_buffer(bounds))
 
 	
 
 
-	def _get_screen_buffer(self):
-		SM_CXSCREEN = 0 # Width of primary screen
-		SM_CYSCREEN = 1 # Height of the primary screen
-		hDesktopWnd = windll.user32.GetDesktopWindow()
-		width = windll.user32.GetSystemMetrics(SM_CXSCREEN)
-		height = windll.user32.GetSystemMetrics(SM_CYSCREEN)
-		hDesktopDC = windll.user32.GetDC (hDesktopWnd)
+	def _get_screen_buffer(self, bounds=None):
+		# Grabs a DC to the entire virtual screen, but only copies to 
+		# the bitmap the the rect defined by the user. 
+
+		SM_XVIRTUALSCREEN = 76  # coordinates for the left side of the virtual screen. 
+		SM_YVIRTUALSCREEN = 77  # coordinates for the right side of the virtual screen.  
+		SM_CXVIRTUALSCREEN = 78 # width of the virtual screen
+		SM_CYVIRTUALSCREEN = 79 # height of the virtual screen
+
+		hDesktopWnd = windll.user32.GetDesktopWindow() #Entire virtual Screen
+
+		left = windll.user32.GetSystemMetrics(SM_XVIRTUALSCREEN)
+		top = windll.user32.GetSystemMetrics(SM_YVIRTUALSCREEN)
+		width = windll.user32.GetSystemMetrics(SM_CXVIRTUALSCREEN)
+		height = windll.user32.GetSystemMetrics(SM_CYVIRTUALSCREEN)
+
+		if bounds:
+			left, top, right, bottom = bounds
+			width = right - left 
+			height = bottom - top
+		
+		hDesktopDC = windll.user32.GetWindowDC(hDesktopWnd)
+		if not hDesktopDC: print 'GetDC Failed'; sys.exit()
+		
 		hCaptureDC = windll.gdi32.CreateCompatibleDC(hDesktopDC)
+		if not hCaptureDC: print 'CreateCompatibleBitmap Failed'; sys.exit()
+
 		hCaptureBitmap = windll.gdi32.CreateCompatibleBitmap(hDesktopDC, width, height)
+		if not hCaptureBitmap: print 'CreateCompatibleBitmap Failed'; sys.exit()
+		
 		windll.gdi32.SelectObject(hCaptureDC, hCaptureBitmap)
 
 		SRCCOPY = 0x00CC0020
-		windll.gdi32.BitBlt(hCaptureDC, 1920, 0, 3840, 1080, hDesktopDC, 0, 0, 0x00CC0020)
+		windll.gdi32.BitBlt(
+			hCaptureDC, 
+			0, 0, 
+			width, height, 
+			hDesktopDC, 
+			left, top, 
+			0x00CC0020
+		)
 		return hCaptureBitmap
 
 	def _make_image_from_buffer(self, hCaptureBitmap):
@@ -333,6 +361,7 @@ class Robot(object):
 
 		bmp_info.bmiHeader.biSizeImage = bmp_info.bmiHeader.biWidth *abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount+7)/8;
 		size = (bmp_info.bmiHeader.biWidth, bmp_info.bmiHeader.biHeight )
+		print size
 		pBuf = (c_char * bmp_info.bmiHeader.biSizeImage)()
 
 		windll.gdi32.GetBitmapBits(hCaptureBitmap, bmp_info.bmiHeader.biSizeImage, pBuf)
@@ -566,57 +595,69 @@ class Robot(object):
 			print i
 
 
-	def get_display_devices(self):
-		''' 
-		Enumerates and returns a list of available display devices 
+
+class RECT(ctypes.Structure):
+	_fields_ = [
+		('left', c_long),
+		('top', c_long),
+		('right', c_long),
+		('bottom', c_long)
+	]
 
 
-		output = [
-			(hMonitor, hdcMonitor, lprcMonitor, dwData)
-		]
+def get_display_monitors(self):
+	''' 
+	Enumerates and returns a list of virtual screen 
+	coordinates for the attached display devices 
 
-		'''
+	output = [
+		(left, top, right, bottom), # Monitor 1
+		(left, top, right, bottom)  # Monitor 2
+		# etc... 
+	]
 
-		attached_monitors = []
-		def _monitorEnumProc(hMonitor, hdcMonitor, lprcMonitor, dwData):
-			# print 'call result:', hMonitor, hdcMonitor, lprcMonitor, dwData
-			attached_monitors.append([hMonitor, hdcMonitor, lprcMonitor, dwData])
-			return True
+	'''
+
+	display_coordinates = []
+	def _monitorEnumProc(hMonitor, hdcMonitor, lprcMonitor, dwData):
+		# print 'call result:', hMonitor, hdcMonitor, lprcMonitor, dwData
+		# print 'DC:', windll.user32.GetWindowDC(hMonitor)
 		
-		# Callback Factory
-		MonitorEnumProc = WINFUNCTYPE(
-			ctypes.c_bool, 
-			ctypes.wintypes.HMONITOR,
-			ctypes.wintypes.HDC,
-			ctypes.POINTER(RECT),
-			ctypes.wintypes.LPARAM
-		)
+		coordinates = (
+			lprcMonitor.contents.left,
+			lprcMonitor.contents.top,
+			lprcMonitor.contents.right,
+			lprcMonitor.contents.bottom
+		) 
+		display_coordinates.append(coordinates)
+		return True
+	
+	# Callback Factory
+	MonitorEnumProc = WINFUNCTYPE(
+		ctypes.c_bool, 
+		ctypes.wintypes.HMONITOR,
+		ctypes.wintypes.HDC,
+		ctypes.POINTER(RECT),
+		ctypes.wintypes.LPARAM
+	)
 
-		# Make the callback function
-		enum_callback = MonitorEnumProc(_monitorEnumProc)
+	# Make the callback function
+	enum_callback = MonitorEnumProc(_monitorEnumProc)
 
-		# Enumerate the windows
-		windll.user32.EnumDisplayMonitors(
-			None, 
-			None,
-			enum_callback,
-			0
-		)
-		return attached_monitors
-
-
+	# Enumerate the windows
+	windll.user32.EnumDisplayMonitors(
+		None, 
+		None,
+		enum_callback,
+		0
+	)
+	return attached_monitors
 
 if __name__ == '__main__':
-	# enum_mons()
+	import Image
 	robot = Robot()
-	print robot.get_display_devices()
-	# im = robot.take_screenshot()
-	# im.save('test_second_mon.png', 'png')
-
-
-
-
-
-
+	im = robot.take_screenshot()
+	im.save('robot.png', 'png')
+	sys.exit()
 
 
