@@ -59,6 +59,27 @@ Doc
 		<td>Moves mouse pointer to given screen coordinates.</td>		
 	</tr>
 
+	<tr>
+		<td><b>get_mouse_pos()</b></td>
+		<td>Returns tuple of current mouse coordinates</td>		
+	</tr>
+
+	<tr>
+		<td><b>get_pixel(<i>x, y</i>)</b></td>
+		<td>Returns the RGB value for the pixel at the given screen coordinate</td>		
+	</tr>
+	<tr>
+		<td><b>mouse_down(<i>button</i>)</b></td>
+		<td>Presses one mouse button.<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;keyword: `button`:<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;type: `string`:<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;Values: `string`:<br>  
+
+		* 'Left'
+		* 'right'
+		* 'middle'
+		</td>		
+	</tr>
 </table>
 
 
