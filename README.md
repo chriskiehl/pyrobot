@@ -44,6 +44,29 @@ if pixel == (expected_color):
 
 # etc.. 
 
+# If you need to take screengrabs, and have PIL Installed, 
+# PyRobot extends the default behavior of PIL by 
+# allowing all entire virtual screen to be targeted (rather 
+# than just the primary). 
+
+# returns a list of screen rects for all attached devices
+monitors_coords = robot.get_display_monitors() 
+
+# Takes a screenshot of the desktop and returns a PIL Image object
+im = robot.take_screenshot(monitors_coords[-1]) # Coordinates of last monitor
+
+# You can also do arbitrarily sized boxes
+left = 100
+top = 430
+width = 1000
+hright = 750
+
+im = robot.take_screenshot((left, top, width, height))
+
+# Save the PIL Image to disk
+im.save('my_awesome_screenshot.png', 'png')
+
+# and so on
  ```  
 
 Doc  
@@ -61,7 +84,7 @@ Doc
 | scroll_mouse_wheel(direction, clicks)  | Scrolls the mouse wheel either `'up'` or `'down'` X number of 'clicks'. |
 | add_to_clipboard(string)  | Copy text into clip board for later pasting. |
 | clear_clipboard() | Clear everything out of the clipboard |
-| take_screenshot() | NOTE REQUIRES PYTHON IMAGE LIBRARY<br>Takes a snapshot of desktop and returns it as a PIL `Image` object |
+| take_screenshot(bounds=None) | NOTE: REQUIRES PYTHON IMAGE LIBRARY<br>Takes a screenshot of the entire desktop and returns it as a PIL `Image` object.<br>Use with `get_display_monitors` to target a specific screen, or pass in a tuple consisting of (`left`, `top`, `width`, `height`).|
 | key_press(key) | Presses a given key.<br>Input: `string'|
 | key_release(key) | Releases a given key.<br>Input: `string` |
 | type_string(input_string, delay=.005) | Convenience function for typing out strings.<br>delay = time between keystrokes |
@@ -69,6 +92,8 @@ Doc
 | start_program(full_path) | Launches a windows application. <br>Input type: `string`|  
 | paste() | Pastes the contents of the clipboard |
 | sleep(duration) | Pauses the robot for `duration` number of seconds. |
+| get_display_monitors() | Enumerates and returns a list of virtual screen coordinates for the attached display devices<br>output = [<br>&nbsp;&nbsp;&nbsp;&nbsp;(left, top, right, bottom), # Monitor 1<br>&nbsp;&nbsp;&nbsp;&nbsp;(left, top, right, bottom)  # Monitor 2<br>&nbsp;&nbsp;&nbsp;&nbsp;# etc... <br>] |
+
 
 
 
