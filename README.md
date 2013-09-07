@@ -37,7 +37,7 @@ expected_color = (255,255,255)
 pixel = robot.get_pixel(location_of_field)
 if pixel == (expected_color): 
 	robot.set_mouse_pos(location_of_field)
-	robot.click('left')
+	robot.click_mouse(button='left')
 	robot.add_to_clipboard('Hello world! How are ya!')
 	robot.paste()
 
@@ -63,10 +63,13 @@ Doc
 | clear_clipboard() | Clear everything out of the clipboard |
 | take_screenshot() | NOTE REQUIRES PYTHON IMAGE LIBRARY<br>Takes a snapshot of desktop and returns it as a PIL `Image` object |
 | key_press(key) | Presses a given key.<br>Input: `string'|
-| key_release(key) | Releases a given key.<br>Input: `string' |
+| key_release(key) | Releases a given key.<br>Input: `string` |
 | type_string(input_string, delay=.005) | Convenience function for typing out strings.<br>delay = time between keystrokes |
 | type_backwards(input_string, delay=.05) | Types right to left. Because why not! |
 | start_program(full_path) | Launches a windows application. <br>Input type: `string`|  
+| paste() | Pastes the contents of the clipboard |
+| sleep() | Pauses the robot for `duration` number of seconds. |
+
 
 
 Special take_snapshot Note
