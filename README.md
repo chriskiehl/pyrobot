@@ -54,7 +54,7 @@ Doc
 | set_mouse_pos(x, y): | Moves mouse pointer to given screen coordinates. |
 | get_mouse_pos(): 		| Returns tuple of current mouse coordinates |
 | get_pixel(x, y): 	| Returns the pixel color `tuple(R,G,B)` of the given screen coordinate|
-| mouse_down(button): | Presses one mouse button. <br>    keywords: `button`:<br>    values: 'Left', 'right', or 'middle' |
+| mouse_down(button): | Presses one mouse button. <br>    keywords: `button`:<br>    values: * 'Left' * 'right', * 'middle' |
 | mouse_up(button):	 | Releases mouse button. String: 'Left', 'right', or 'middle' |
 | click(button): 	| Simulates a full mouse click. One down event, one up event. String: 'left', 'right', 'middle' |
 | scroll_mouse_wheel(direction, clicks):  | Scrolls the mouse wheel either up or down X number of 'clicks'. |
