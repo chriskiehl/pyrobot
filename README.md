@@ -48,6 +48,20 @@ if pixel == (expected_color):
 
 Doc  
 ---  
+
+<table>
+	<tr>
+		<th>Method Name</th>
+		<th>Summary</th>		
+	</tr>
+	<tr>
+		<td><b>set_mouse_pos(<i>x, y</i>)</b></td>
+		<td>Moves mouse pointer to given screen coordinates.</td>		
+	</tr>
+
+</table>
+
+
    
 | Method                                | Summary                    |
 | --------------------------------------|-----------------------------
