@@ -105,7 +105,6 @@ Being that Python has no built in Image library (that I know of), it seemed of l
 TODO
 ----  
 
-* Multi-monitor support for screen_grab functions
 * Allow specific window/program targeting so that relative coordinates can be used while scripting. 
 
 
