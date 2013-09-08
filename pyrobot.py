@@ -595,6 +595,53 @@ class Robot(object):
 			print i
 
 
+	def get_display_monitors(self):
+		''' 
+		Enumerates and returns a list of virtual screen 
+		coordinates for the attached display devices 
+
+		output = [
+			(left, top, right, bottom), # Monitor 1
+			(left, top, right, bottom)  # Monitor 2
+			# etc... 
+		]
+
+		'''
+
+		display_coordinates = []
+		def _monitorEnumProc(hMonitor, hdcMonitor, lprcMonitor, dwData):
+			# print 'call result:', hMonitor, hdcMonitor, lprcMonitor, dwData
+			# print 'DC:', windll.user32.GetWindowDC(hMonitor)
+			
+			coordinates = (
+				lprcMonitor.contents.left,
+				lprcMonitor.contents.top,
+				lprcMonitor.contents.right,
+				lprcMonitor.contents.bottom
+			) 
+			display_coordinates.append(coordinates)
+			return True
+		
+		# Callback Factory
+		MonitorEnumProc = WINFUNCTYPE(
+			ctypes.c_bool, 
+			ctypes.wintypes.HMONITOR,
+			ctypes.wintypes.HDC,
+			ctypes.POINTER(RECT),
+			ctypes.wintypes.LPARAM
+		)
+
+		# Make the callback function
+		enum_callback = MonitorEnumProc(_monitorEnumProc)
+
+		# Enumerate the windows
+		windll.user32.EnumDisplayMonitors(
+			None, 
+			None,
+			enum_callback,
+			0
+		)
+		return display_coordinates
 
 class RECT(ctypes.Structure):
 	_fields_ = [
@@ -605,53 +652,6 @@ class RECT(ctypes.Structure):
 	]
 
 
-def get_display_monitors(self):
-	''' 
-	Enumerates and returns a list of virtual screen 
-	coordinates for the attached display devices 
-
-	output = [
-		(left, top, right, bottom), # Monitor 1
-		(left, top, right, bottom)  # Monitor 2
-		# etc... 
-	]
-
-	'''
-
-	display_coordinates = []
-	def _monitorEnumProc(hMonitor, hdcMonitor, lprcMonitor, dwData):
-		# print 'call result:', hMonitor, hdcMonitor, lprcMonitor, dwData
-		# print 'DC:', windll.user32.GetWindowDC(hMonitor)
-		
-		coordinates = (
-			lprcMonitor.contents.left,
-			lprcMonitor.contents.top,
-			lprcMonitor.contents.right,
-			lprcMonitor.contents.bottom
-		) 
-		display_coordinates.append(coordinates)
-		return True
-	
-	# Callback Factory
-	MonitorEnumProc = WINFUNCTYPE(
-		ctypes.c_bool, 
-		ctypes.wintypes.HMONITOR,
-		ctypes.wintypes.HDC,
-		ctypes.POINTER(RECT),
-		ctypes.wintypes.LPARAM
-	)
-
-	# Make the callback function
-	enum_callback = MonitorEnumProc(_monitorEnumProc)
-
-	# Enumerate the windows
-	windll.user32.EnumDisplayMonitors(
-		None, 
-		None,
-		enum_callback,
-		0
-	)
-	return attached_monitors
 
 if __name__ == '__main__':
 	import Image
