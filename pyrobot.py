@@ -3,8 +3,8 @@
 A pure python windows automation library loosely modeled after Java's Robot Class.
 
 
-TODO: 
-	* Finish EnumDisplayMonitors func. Complete multi-mon support. 
+TODO:
+	* Mac support  
 	* Allow window section for relative coordinates.
 	* ability to 'paint' target window. 
 
@@ -25,9 +25,6 @@ UNIT_PTR  = c_ulong
 SIZE_T    = c_ulong
 
 '''
-
-
-
 
 
 import sys
@@ -222,6 +219,18 @@ class Robot(object):
 		'''
 		self.mouse_down(button)
 		self.mouse_up(button)
+
+	def double_click_mouse(self, button):
+		'''
+		Two full mouse clicks. One down event, one up event. 
+		'''
+		self.click_mouse(button)
+		self.sleep(.1)
+		self.click_mouse(button)
+
+	def move_and_click(self, x, y, button):
+		"convenience function: Move to corrdinate and click mouse"
+		self.set_mouse_pos(x,y)
 
 	def scroll_mouse_wheel(self, direction, clicks): 
 		'''
@@ -558,7 +567,7 @@ class Robot(object):
 		time.sleep(5)
 
 
-	def _enumerate_windows():
+	def _enumerate_windows(self):
 		'''
 		Loops through the titles of all the "windows."
 		Spits out too much junk to to be of immidiate use. 
@@ -566,7 +575,7 @@ class Robot(object):
 		callbacks work. 
 		'''
 
-		raise NotImplementedError('Not ready yet. Git outta here!')
+		# raise NotImplementedError('Not ready yet. Git outta here!')
 
 		titles = []
 		def enumWindowsProc(hwnd, lParam):
@@ -656,8 +665,8 @@ class RECT(ctypes.Structure):
 if __name__ == '__main__':
 	import Image
 	robot = Robot()
-	im = robot.take_screenshot()
-	im.save('robot.png', 'png')
-	sys.exit()
+	# robot._enumerate_windows()
+	print windll.user32.FindWindowA(None, "Console2 - python")
+
 
 
