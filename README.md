@@ -80,7 +80,9 @@ Doc
 | get_pixel(x, y) 	| Returns the pixel color `tuple(R,G,B)` of the given screen coordinate|
 | mouse_down(button) | Presses one mouse button.<br> button can be `'Left'`, `'right'`, or `'middle'` |
 | mouse_up(button)	 | Releases mouse button.<br> button can be `'Left'`, `'right'`, or `'middle'` |
-| click(button) 	| Simulates a full mouse click. One down event, one up event.<br> button can be `'Left'`, `'right'`, or `'middle'` |
+| click_mouse(button) 	| Simulates a full mouse click. One down event, one up event.<br> button can be `'Left'`, `'right'`, or `'middle'` |
+| double_click_mouse(button) | Two full mouse clicks. One down event, one up event. |
+| move_and_click(x,y,button) | convenience function: Move to corrdinate and click mouse |
 | scroll_mouse_wheel(direction, clicks)  | Scrolls the mouse wheel either `'up'` or `'down'` X number of 'clicks'. |
 | add_to_clipboard(string)  | Copy text into clip board for later pasting. |
 | clear_clipboard() | Clear everything out of the clipboard |
