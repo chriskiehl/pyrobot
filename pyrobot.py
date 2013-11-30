@@ -30,6 +30,7 @@ SIZE_T    = c_ulong
 import sys
 import time
 import ctypes 
+import multiprocessing 
 from ctypes import *
 from ctypes.wintypes import *
 
@@ -203,7 +204,7 @@ class Robot(object):
 		windll.user32.mouse_event(
 			*self.press_events[button.lower()]
 		)
-		time.sleep(.2)
+		# time.sleep(.2)
 
 	def mouse_up(self, button):
 		'''
@@ -249,6 +250,16 @@ class Robot(object):
 
 	def _scrolldown(self):
 		windll.user32.mouse_event(self.win32con.WHEEL, None, None, -120, None)
+
+	def get_clipboard_data(self):
+		CF_TEXT = 1
+		windll.user32.OpenClipboard(None)
+		hglb = windll.user32.GetClipboardData(CF_TEXT)
+		
+		text_ptr = c_char_p(windll.kernel32.GlobalLock(hglb))
+		windll.kernel32.GlobalUnlock(hglb)
+
+		return text_ptr.value
 
 	def add_to_clipboard(self, string): 
 		'''
@@ -370,7 +381,7 @@ class Robot(object):
 
 		bmp_info.bmiHeader.biSizeImage = bmp_info.bmiHeader.biWidth *abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount+7)/8;
 		size = (bmp_info.bmiHeader.biWidth, bmp_info.bmiHeader.biHeight )
-		print size
+		# print size
 		pBuf = (c_char * bmp_info.bmiHeader.biSizeImage)()
 
 		windll.gdi32.GetBitmapBits(hCaptureBitmap, bmp_info.bmiHeader.biSizeImage, pBuf)
@@ -472,6 +483,7 @@ class Robot(object):
 
 		TODO: 
 			* return Handle to started program. 
+			* Search on program name
 		'''
 
 		class STARTUPINFO(ctypes.Structure):
@@ -536,35 +548,7 @@ class Robot(object):
 		time.sleep(duration)
 
 
-	def _convert_rgb(self, r, g, b):
-	    r = r & 0xFF
-	    g = g & 0xFF
-	    b = b & 0xFF
-	    return (b << 16) | (g << 8) | r
 
-	def draw_pixels(self, rgb_value):
-		'''
-		Draw pixels on the screen. 
-
-		Eventual plan is to use this to draw bounding boxes for template matching.
-		Idea is to have it seek out anything that looks vaguely like a text-box 
-		(or something). Who knows. 
-
-		'''
-
-		raise NotImplementedError('Not ready yet. Git outta here!')
-
-		rgb = _convert_rgb(*rgb_value)
-		hdc = windll.user32.GetDC(None)
-		rgb = make_rgb(255,255,255)
-		for i in range(50):
-			print windll.gdi32.SetPixel(
-				hdc, 
-				c_int(200 + i),
-				c_int(200 + i),
-				rgb
-			)
-		time.sleep(5)
 
 
 	def _enumerate_windows(self):
@@ -652,6 +636,65 @@ class Robot(object):
 		)
 		return display_coordinates
 
+
+	def draw_box(self, location, rgb_value): 
+		p1_x, p1_y, p2_x, p2_y = location
+		
+		width = p2_x - p1_x 
+		height = p2_y - p1_y 
+
+		for pix in range(width):
+			self.draw_pixel((p1_x + pix, p1_y), rgb_value)
+			self.draw_pixel((p1_x + pix, p2_y), rgb_value)
+
+			self.draw_pixel((p1_x + pix, p1_y - 1), rgb_value) # Add thicker top
+			self.draw_pixel((p1_x + pix, p2_y + 1), rgb_value) # Add thicker bottom
+		
+		for i in range(height):
+			self.draw_pixel((p1_x, p1_y + i), rgb_value)
+			self.draw_pixel((p2_x, p1_y + i), rgb_value)
+
+			self.draw_pixel((p1_x - 1, p1_y + i), rgb_value) # Thicker left
+			self.draw_pixel((p2_x + 1, p1_y + i), rgb_value) # Thicker right
+
+
+
+	def draw_pixel(self, coordinate, rgb_value):
+		'''
+		Draw pixels on the screen. 
+
+		Eventual plan is to use this to draw bounding boxes for template matching.
+		Idea is to have it seek out anything that looks vaguely like a text-box 
+		(or something). Who knows. 
+
+		'''
+		def _convert_rgb(r, g, b):
+		    r = r & 0xFF
+		    g = g & 0xFF
+		    b = b & 0xFF
+		    return (b << 16) | (g << 8) | r
+
+		# raise NotImplementedError('Not ready yet. Git outta here!')
+
+		rgb = _convert_rgb(*rgb_value)
+		hdc = windll.user32.GetDC(None)
+		
+		x, y = coordinate
+
+		windll.gdi32.SetPixel(
+			hdc, 
+			c_int(x),
+			c_int(y),
+			rgb
+			)
+
+	def match_template(self):
+		import ImageOps 
+		im = ImageOps.grayscale(self.take_screenshot(self.get_display_monitors()[0]))
+		# im = ImageOps.grayscale(self.take_screenshot())
+		return im.size, im.getdata()
+
+
 class RECT(ctypes.Structure):
 	_fields_ = [
 		('left', c_long),
@@ -661,12 +704,212 @@ class RECT(ctypes.Structure):
 	]
 
 
+def build_match_box2(data, source): 
+	data = data 
+	source = source
+	while True: 
+		row, col, img_size = yield
+		match_box = [data[row + x][col : img_size + col] for x in xrange(img_size)]
+		yield match_box == source
+
+def mmmm(dataa, sourcee):
+	def build_match_box(x):
+		data = dataa 
+		source = sourcee 
+		row, col, img_size = x
+		match_box = [data[row + x][col : img_size + col] for x in xrange(img_size)]
+		return match_box == source
+	return build_match_box
+
+def build_match_box(x):
+	data, source, row, col, img_size = x
+	match_box = [data[row + x][col : img_size + col] for x in xrange(img_size)]
+	return match_box == source
+
+def builder(p,t):
+	p_matrix = p 
+	template = t 
+	while True: 
+		row, col, img_size = yield
+		match_box = [data[row + x][col : img_size + col] for x in xrange(img_size)]
+		yield match_box == source
+
+
+class Worker(multiprocessing.Process):
+	def __init__(self, p_queue, o_queue, search_image,
+			search_image_width, template, template_width, template_height): 
+		multiprocessing.Process.__init__(self)
+		self.in_queue = p_queue
+		self.out_queue = o_queue
+		self.search_image = search_image
+		self.search_image_width = search_image_width
+		self.template = template
+		self.template_width = template_width
+		self.template_height = template_height
+
+	def run(self):
+		robot = Robot()
+		def get_matches(j):
+			row_index = self.search_image_width * j
+			return (self.search_image[
+						col + row_index : self.template_width + row_index + col] 
+						== self.template[(self.template_width * j) : (self.template_width * (j + 1))])
+
+		while True: 
+			queue_item = self.in_queue.get()
+			
+			if isinstance(queue_item, str): 
+				break 
+			
+			start_pos, end_pos = queue_item					
+
+			for col in range(start_pos, end_pos):
+				if (self.search_image[col : self.template_width + col] == self.template[0:self.template_width] and 
+					self.search_image[col + self.search_image_width * 4: self.template_width + (self.search_image_width * 4) + col] == self.template[(self.template_width * 4) : (self.template_width * (4 + 1))]):
+					results = map(get_matches, range(1, self.template_height))
+					if sum(results) == self.template_height - 1: 
+						y = col/self.search_image_width
+						x = col % self.search_image_width
+						# self.out_queue.put((x, y, x + self.template_width, y + self.template_height))
+						# print self.out_queue.qsize()
+						print 'Match found at:', (x, y, x + self.template_width, y + self.template_height)
+						robot.draw_box((x, y, x + self.template_width, y + self.template_height), (0,255,0))
+
+
+def _playing_around_ignore_me():
+	robot = Robot()
+
+	# # robot.draw_pixels((255,255,255))	
+	# # print robot.get_mouse_pos()
+	# # (546, 212)
+
+	import array
+	import Image
+	import math
+	import ImageOps
+	import multiprocessing 
+
+	# im = ImageOps.grayscale(robot.take_screenshot((100,100, 150, 150)))
+	# im = ImageOps.grayscale(robot.take_screenshot((500,520, 600, 700)))
+	# im.save('whooo.png', 'png')
+	im = ImageOps.grayscale(Image.open('template2.png'))
+	# img_to_match = Image.open('whooo.bmp')
+	import time 
+
+	template = multiprocessing.Array('i', list(im.getdata()))
+	template_width, template_height = im.size
+	print template, template_width, template_height
+
+	# source_line = to_match_data[0:img_to_match.size[0]]
+	# source = [to_match_data[x:img_to_match.size[0] + x] for x in xrange(0, len(to_match_data), img_to_match.size[0])]
+	# # print 'Source:', len(source[0]), len(source[1])
+	# # cross_section = [source[x][x] for x in range(len(source))]
+	# # print cross_section
+
+	search_image_size, data = robot.match_template()
+	search_image_width, search_image_height = search_image_size
+	search_image = multiprocessing.Array('i', list(data))
+
+	cpus = 2
+	print len(search_image)
+	stepsize = len(search_image) / (cpus)
+	search_ranges = [_ for _ in range(0, len(search_image) + 1, stepsize)]
+	search_ranges[-1] = search_ranges[-1] - template_width
+	print search_ranges
+
+	pool = []
+	process_queue = multiprocessing.Queue()
+	output_queue = multiprocessing.Queue()
+	for i in range(cpus):
+		p = Worker(process_queue, output_queue, 
+			search_image, search_image_width, 
+			template, template_width, template_height) 
+		p.start()
+		pool.append(p) 
+
+	print 'Searching...'
+	for i in zip(search_ranges, search_ranges[1:]):
+		process_queue.put(i)
+	for i in range(10): process_queue.put('')
+	for i in pool: i.join() 
+
+	for i in range(output_queue.qsize()):
+		a = output_queue.get() 
+		print a 
+		robot.draw_box(a, (0,255,0)) 
+		
+
+
+# 	# print search_image, search_image_size 
+
+# 	# matches = []
+# 	# for col in xrange(len(search_image) - template_width):
+# 	# 	if search_image[col : template_width + col] == template[0:template_width]:
+# 	# 		print True, col/search_image_width, col % search_image_width 
+# 	# 		# results = map(get_matches, range(1, template_height))
+# 	# 		# if sum(results) > (template_height / 2): # see if at least half of the tests were matches. If so, sure, let's call it a match! 
+# 	# 		# 	matches.append((col/search_image_width, col % search_image_width, col/search_image_width + template_width, col%search_image_width + template_height))
+
+# 	# # 		# DO NOT REMOVE. WORKS. 
+# 	# 		r = []
+# 	# 		for j in range(1, template_height):
+# 	# 			r.append(search_image[col + (search_image_width * j): template_width + (search_image_width * j) + col] == template[(template_width * j) : (template_width * (j + 1))])
+# 	# # 		break 
+# 	# print matches
+	# def get_matches(j):
+	# 	row_index = search_image_width * j
+	# 	return (search_image[
+	# 				col + row_index : template_width + row_index + col] 
+	# 				== template[(template_width * j) : (template_width * (j + 1))])
+
+	
+	# for col in range(len(search_image) - template_width):
+	# 	if (search_image[col : template_width + col] == template[0:template_width] and 
+	# 		search_image[col + search_image_width * 4: template_width + (search_image_width * 4) + col] == template[(template_width * 4) : (template_width * (4 + 1))]):
+	# 		results = map(get_matches, range(1, template_height))
+	# 		if sum(results) == template_height - 1: 
+	# 			y = col/search_image_width
+	# 			x = col % search_image_width
+				# out_queue.put((x, y, x + template_width, y + template_height))
+				# print out_queue.qsize()
+				# robot.draw_box((x, y, x + template_width, y + template_height), (0,255,0))
+
+
+# # No threads: [Finished in 20.2s]
+# # No threads: [Finished in 20.3s]
+# # w/ 8 cores: [Finished in 17.6s]
+# # w/ 8 cores: [Finished in 17.6s]
+# # w/ 4 cores: [Finished in 16.3s]
+# # w/ 4 cores: [Finished in 16.2s]
+# # w/ 2 cores: 
+
+def get_cpus():
+	cpus = multiprocessing.cpu_count()
+	if cpus >2:
+		return cpus/2 
+	return 1 
+
 
 if __name__ == '__main__':
-	import Image
 	robot = Robot()
-	# robot._enumerate_windows()
-	print windll.user32.FindWindowA(None, "Console2 - python")
+	text = robot.get_clipboard_data()
+	# print text.value
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
