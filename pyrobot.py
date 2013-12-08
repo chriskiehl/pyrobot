@@ -144,6 +144,10 @@ class KeyConsts(object):
 		self.special_keys = '~ ! @ # $ % ^ & * ( ) _ + | } { " : ? > <'.split()
 		self.special_map  = "` 1 2 3 4 5 6 7 8 9 0 - = \\ ] [ ' ; / . ,".split()
 
+class Keys(object): 
+	def __init__(self): 
+		# Again... 
+		self.space=32;self.left_mouse_button=1;self.right_mouse_button=2;self.control_break_processing=3;self.middle_mouse_button_three_button_mouse=4;self.x1_mouse_button=5;self.x2_mouse_button=6;self.undefined=7;self.backspace=8;self.tab=9;self.reserved=10;self.clear=12;self.enter=13;self.undefined=14;self.shift=16;self.ctrl=17;self.alt=18;self.pause=19;self.caps_lock=20;self.undefined=22;self.undefined=26;self.esc=27;self.spacebar=32;self.page_up=33;self.page_down=34;self.end=35;self.home=36;self.left_arrow=37;self.up_arrow=38;self.right_arrow=39;self.down_arrow=40;self.select=41;self.print_key=42;self.execute=43;self.print_screen=44;self.ins=45;self.delete=46;self.help_key=47;self.zero=48;self.one=49;self.two=50;self.three=51;self.four=52;self.five=53;self.six=54;self.seven=55;self.eight=56;self.nine=57;self.undefined=18;self.a=65;self.b=66;self.c=67;self.d=68;self.e=69;self.f=70;self.g=71;self.h=72;self.i=73;self.j=74;self.k=75;self.l=76;self.m=77;self.n=78;self.o=79;self.p=80;self.q=81;self.r=82;self.s=83;self.t=84;self.u=85;self.v=86;self.w=87;self.x=88;self.y=89;self.z=90;self.left_windows__natural_board=91;self.right_windows__natural_board=92;self.applications__natural_board=93;self.reserved=94;self.computer_sleep=95;self.numeric_pad_0=96;self.numeric_pad_1=97;self.numeric_pad_2=98;self.numeric_pad_3=99;self.numeric_pad_4=100;self.numeric_pad_5=101;self.numeric_pad_6=102;self.numeric_pad_7=103;self.numeric_pad_8=104;self.numeric_pad_9=105;self.multiply=106;self.add=107;self.separator=108;self.subtract=109;self.decimal=110;self.divide=111;self.f1=112;self.f2=113;self.f3=114;self.f4=115;self.f5=116;self.f6=117;self.f7=118;self.f8=119;self.f9=120;self.f10=121;self.f11=122;self.f12=123;self.f13=124;self.f14=125;self.f15=126;self.f16=127;self.f17=128;self.f18=129;self.f19=130;self.f20=131;self.f21=132;self.f22=133;self.f23=134;self.f24=135;self.unassigned=136;self.num_lock=144;self.scroll_lock=145;self.oem_specific=146;self.unassigned=151;self.left_shift=160;self.right_shift=161;self.left_control=162;self.right_control=163;self.left_menu=164;self.right_menu=165;self.browser_back=166;self.browser_forward=167;self.browser_refresh=168;self.browser_stop=169;self.browser_search=170;self.browser_favorites=171;self.browser_start_and_home=172;self.volume_mute=173;self.volume_down=174;self.volume_up=175;self.next_track=176;self.previous_track=177;self.stop_media=178;self.play_pause_media=179;self.start_mail=180;self.select_media=181;self.start_application_1=182;self.start_application_2=183;self.reserved=184;self.semicolon=186;self.equals=187;self.comma=188;self.minus=189;self.peiod=190;self.forward_slash=191;self.back_tick=192;self.reserved=193;self.unassigned=216;self.open_brace=219;self.backslash=220;self.close_brace=221;self.apostrophe=222;self.reserved=224;self.oem_specific=225;self.either_the_angle_bracket__or_the_backslash__on_the_rt_102__board=226;self.oem_specific=227;self.oem_specific=230;self.unassigned=232;self.oem_specific=233;self.attn=246;self.crsel=247;self.exsel=248;self.erase_eof=249;self.play=250;self.zoom=251;self.reserved=252;self.pa1=253;self.clear=254;
 
 
 class Robot(object):
@@ -252,6 +256,10 @@ class Robot(object):
 		windll.user32.mouse_event(self.win32con.WHEEL, None, None, -120, None)
 
 	def get_clipboard_data(self):
+		'''
+		Retrieves text from the Windows clipboard
+		as a String
+		'''
 		CF_TEXT = 1
 		windll.user32.OpenClipboard(None)
 		hglb = windll.user32.GetClipboardData(CF_TEXT)
@@ -388,12 +396,21 @@ class Robot(object):
 
 		return Image.frombuffer('RGB', size, pBuf, 'raw', 'BGRX', 0, 1)
 
+	def press_and_release(self, key):
+		'''
+		Simulates pressing a key: One down event, one release event.
+		'''
+		self.key_press(key)
+		self.key_release(key)
 
 	def key_press(self, key):
 		''' Presses a given key. '''
 		KEY_PRESS = 0
 
-		vk_code = self._vk_from_char(key)
+		if isinstance(key, str):
+			vk_code = self._vk_from_char(key)
+		else:
+			vk_code = key
 		self._key_control(key=vk_code, action=KEY_PRESS)
 
 	def key_release(self, key):
@@ -531,6 +548,15 @@ class Robot(object):
 			byref(startupinfo),
 			byref(processInformation)
 			)
+
+	def copy(self): 
+		'''
+		convenience function for issuing Ctrl+C copy command
+		'''
+		self.key_press('ctrl')
+		self.key_press('c')
+		self.key_release('c')
+		self.key_release('ctrl')
 
 	def paste(self):
 		''' 
@@ -703,140 +729,146 @@ class RECT(ctypes.Structure):
 		('bottom', c_long)
 	]
 
+# GAH! Look not at this! 
+#
+#
+# Me no smart at template matching.. 
+#
+#
+#
+# def build_match_box2(data, source): 
+# 	data = data 
+# 	source = source
+# 	while True: 
+# 		row, col, img_size = yield
+# 		match_box = [data[row + x][col : img_size + col] for x in xrange(img_size)]
+# 		yield match_box == source
 
-def build_match_box2(data, source): 
-	data = data 
-	source = source
-	while True: 
-		row, col, img_size = yield
-		match_box = [data[row + x][col : img_size + col] for x in xrange(img_size)]
-		yield match_box == source
+# def mmmm(dataa, sourcee):
+# 	def build_match_box(x):
+# 		data = dataa 
+# 		source = sourcee 
+# 		row, col, img_size = x
+# 		match_box = [data[row + x][col : img_size + col] for x in xrange(img_size)]
+# 		return match_box == source
+# 	return build_match_box
 
-def mmmm(dataa, sourcee):
-	def build_match_box(x):
-		data = dataa 
-		source = sourcee 
-		row, col, img_size = x
-		match_box = [data[row + x][col : img_size + col] for x in xrange(img_size)]
-		return match_box == source
-	return build_match_box
+# def build_match_box(x):
+# 	data, source, row, col, img_size = x
+# 	match_box = [data[row + x][col : img_size + col] for x in xrange(img_size)]
+# 	return match_box == source
 
-def build_match_box(x):
-	data, source, row, col, img_size = x
-	match_box = [data[row + x][col : img_size + col] for x in xrange(img_size)]
-	return match_box == source
-
-def builder(p,t):
-	p_matrix = p 
-	template = t 
-	while True: 
-		row, col, img_size = yield
-		match_box = [data[row + x][col : img_size + col] for x in xrange(img_size)]
-		yield match_box == source
+# def builder(p,t):
+# 	p_matrix = p 
+# 	template = t 
+# 	while True: 
+# 		row, col, img_size = yield
+# 		match_box = [data[row + x][col : img_size + col] for x in xrange(img_size)]
+# 		yield match_box == source
 
 
-class Worker(multiprocessing.Process):
-	def __init__(self, p_queue, o_queue, search_image,
-			search_image_width, template, template_width, template_height): 
-		multiprocessing.Process.__init__(self)
-		self.in_queue = p_queue
-		self.out_queue = o_queue
-		self.search_image = search_image
-		self.search_image_width = search_image_width
-		self.template = template
-		self.template_width = template_width
-		self.template_height = template_height
+# class Worker(multiprocessing.Process):
+# 	def __init__(self, p_queue, o_queue, search_image,
+# 			search_image_width, template, template_width, template_height): 
+# 		multiprocessing.Process.__init__(self)
+# 		self.in_queue = p_queue
+# 		self.out_queue = o_queue
+# 		self.search_image = search_image
+# 		self.search_image_width = search_image_width
+# 		self.template = template
+# 		self.template_width = template_width
+# 		self.template_height = template_height
 
-	def run(self):
-		robot = Robot()
-		def get_matches(j):
-			row_index = self.search_image_width * j
-			return (self.search_image[
-						col + row_index : self.template_width + row_index + col] 
-						== self.template[(self.template_width * j) : (self.template_width * (j + 1))])
+# 	def run(self):
+# 		robot = Robot()
+# 		def get_matches(j):
+# 			row_index = self.search_image_width * j
+# 			return (self.search_image[
+# 						col + row_index : self.template_width + row_index + col] 
+# 						== self.template[(self.template_width * j) : (self.template_width * (j + 1))])
 
-		while True: 
-			queue_item = self.in_queue.get()
+# 		while True: 
+# 			queue_item = self.in_queue.get()
 			
-			if isinstance(queue_item, str): 
-				break 
+# 			if isinstance(queue_item, str): 
+# 				break 
 			
-			start_pos, end_pos = queue_item					
+# 			start_pos, end_pos = queue_item					
 
-			for col in range(start_pos, end_pos):
-				if (self.search_image[col : self.template_width + col] == self.template[0:self.template_width] and 
-					self.search_image[col + self.search_image_width * 4: self.template_width + (self.search_image_width * 4) + col] == self.template[(self.template_width * 4) : (self.template_width * (4 + 1))]):
-					results = map(get_matches, range(1, self.template_height))
-					if sum(results) == self.template_height - 1: 
-						y = col/self.search_image_width
-						x = col % self.search_image_width
-						# self.out_queue.put((x, y, x + self.template_width, y + self.template_height))
-						# print self.out_queue.qsize()
-						print 'Match found at:', (x, y, x + self.template_width, y + self.template_height)
-						robot.draw_box((x, y, x + self.template_width, y + self.template_height), (0,255,0))
+# 			for col in range(start_pos, end_pos):
+# 				if (self.search_image[col : self.template_width + col] == self.template[0:self.template_width] and 
+# 					self.search_image[col + self.search_image_width * 4: self.template_width + (self.search_image_width * 4) + col] == self.template[(self.template_width * 4) : (self.template_width * (4 + 1))]):
+# 					results = map(get_matches, range(1, self.template_height))
+# 					if sum(results) == self.template_height - 1: 
+# 						y = col/self.search_image_width
+# 						x = col % self.search_image_width
+# 						# self.out_queue.put((x, y, x + self.template_width, y + self.template_height))
+# 						# print self.out_queue.qsize()
+# 						print 'Match found at:', (x, y, x + self.template_width, y + self.template_height)
+# 						robot.draw_box((x, y, x + self.template_width, y + self.template_height), (0,255,0))
 
 
-def _playing_around_ignore_me():
-	robot = Robot()
+# def _playing_around_ignore_me():
+# 	robot = Robot()
 
-	# # robot.draw_pixels((255,255,255))	
-	# # print robot.get_mouse_pos()
-	# # (546, 212)
+# 	# # robot.draw_pixels((255,255,255))	
+# 	# # print robot.get_mouse_pos()
+# 	# # (546, 212)
 
-	import array
-	import Image
-	import math
-	import ImageOps
-	import multiprocessing 
+# 	import array
+# 	import Image
+# 	import math
+# 	import ImageOps
+# 	import multiprocessing 
 
-	# im = ImageOps.grayscale(robot.take_screenshot((100,100, 150, 150)))
-	# im = ImageOps.grayscale(robot.take_screenshot((500,520, 600, 700)))
-	# im.save('whooo.png', 'png')
-	im = ImageOps.grayscale(Image.open('template2.png'))
-	# img_to_match = Image.open('whooo.bmp')
-	import time 
+# 	# im = ImageOps.grayscale(robot.take_screenshot((100,100, 150, 150)))
+# 	# im = ImageOps.grayscale(robot.take_screenshot((500,520, 600, 700)))
+# 	# im.save('whooo.png', 'png')
+# 	im = ImageOps.grayscale(Image.open('template2.png'))
+# 	# img_to_match = Image.open('whooo.bmp')
+# 	import time 
 
-	template = multiprocessing.Array('i', list(im.getdata()))
-	template_width, template_height = im.size
-	print template, template_width, template_height
+# 	template = multiprocessing.Array('i', list(im.getdata()))
+# 	template_width, template_height = im.size
+# 	print template, template_width, template_height
 
-	# source_line = to_match_data[0:img_to_match.size[0]]
-	# source = [to_match_data[x:img_to_match.size[0] + x] for x in xrange(0, len(to_match_data), img_to_match.size[0])]
-	# # print 'Source:', len(source[0]), len(source[1])
-	# # cross_section = [source[x][x] for x in range(len(source))]
-	# # print cross_section
+# 	# source_line = to_match_data[0:img_to_match.size[0]]
+# 	# source = [to_match_data[x:img_to_match.size[0] + x] for x in xrange(0, len(to_match_data), img_to_match.size[0])]
+# 	# # print 'Source:', len(source[0]), len(source[1])
+# 	# # cross_section = [source[x][x] for x in range(len(source))]
+# 	# # print cross_section
 
-	search_image_size, data = robot.match_template()
-	search_image_width, search_image_height = search_image_size
-	search_image = multiprocessing.Array('i', list(data))
+# 	search_image_size, data = robot.match_template()
+# 	search_image_width, search_image_height = search_image_size
+# 	search_image = multiprocessing.Array('i', list(data))
 
-	cpus = 2
-	print len(search_image)
-	stepsize = len(search_image) / (cpus)
-	search_ranges = [_ for _ in range(0, len(search_image) + 1, stepsize)]
-	search_ranges[-1] = search_ranges[-1] - template_width
-	print search_ranges
+# 	cpus = 2
+# 	print len(search_image)
+# 	stepsize = len(search_image) / (cpus)
+# 	search_ranges = [_ for _ in range(0, len(search_image) + 1, stepsize)]
+# 	search_ranges[-1] = search_ranges[-1] - template_width
+# 	print search_ranges
 
-	pool = []
-	process_queue = multiprocessing.Queue()
-	output_queue = multiprocessing.Queue()
-	for i in range(cpus):
-		p = Worker(process_queue, output_queue, 
-			search_image, search_image_width, 
-			template, template_width, template_height) 
-		p.start()
-		pool.append(p) 
+# 	pool = []
+# 	process_queue = multiprocessing.Queue()
+# 	output_queue = multiprocessing.Queue()
+# 	for i in range(cpus):
+# 		p = Worker(process_queue, output_queue, 
+# 			search_image, search_image_width, 
+# 			template, template_width, template_height) 
+# 		p.start()
+# 		pool.append(p) 
 
-	print 'Searching...'
-	for i in zip(search_ranges, search_ranges[1:]):
-		process_queue.put(i)
-	for i in range(10): process_queue.put('')
-	for i in pool: i.join() 
+# 	print 'Searching...'
+# 	for i in zip(search_ranges, search_ranges[1:]):
+# 		process_queue.put(i)
+# 	for i in range(10): process_queue.put('')
+# 	for i in pool: i.join() 
 
-	for i in range(output_queue.qsize()):
-		a = output_queue.get() 
-		print a 
-		robot.draw_box(a, (0,255,0)) 
+# 	for i in range(output_queue.qsize()):
+# 		a = output_queue.get() 
+# 		print a 
+# 		robot.draw_box(a, (0,255,0)) 
 		
 
 
@@ -893,7 +925,7 @@ def get_cpus():
 if __name__ == '__main__':
 	robot = Robot()
 	text = robot.get_clipboard_data()
-	# print text.value
+	print text
 
 
 
