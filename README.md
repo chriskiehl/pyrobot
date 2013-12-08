@@ -7,6 +7,8 @@ What is it?
 
 PyRobot is a lightweight, pure Python Windows automation library loosely modeled after Java's Robot Class. It can be used to drive applications that don't provide an API or any way of hooking into them programatically. Good for when you can't (or don't want to) install the great, but a bit hefty, pywin32 libraries.   
 
+You can check out a couple of use cases for PyRobot [here](https://medium.com/p/697d2c968a2f)
+
 Installation
 ------------
 
@@ -69,32 +71,57 @@ im.save('my_awesome_screenshot.png', 'png')
 # and so on
  ```  
 
+Updates
+-------  
+
+* Added ability to read data from the clipboard. 
+
+        my_var = robot.get_clipboard_data()
+
+* convenience method `press_and_release`   
+ 
+         robot.press_and_release('caps_lock')
+
+* Added `Key` class
+  
+        from pyrobot import Robot, Keys
+        robot = Robot() 
+        key = Keys() 
+        
+        robot.press_and_release(key.forward_slash)
+
+
+
+
 Doc  
 ---  
 
 
 | Method                                | Summary                    |
 | --------------------------------------|-----------------------------
-| set_mouse_pos(x, y): | Moves mouse pointer to given screen coordinates. |
-| get_mouse_pos() 		| Returns tuple of current mouse coordinates |
-| get_pixel(x, y) 	| Returns the pixel color `tuple(R,G,B)` of the given screen coordinate|
-| mouse_down(button) | Presses one mouse button.<br> button can be `'Left'`, `'right'`, or `'middle'` |
-| mouse_up(button)	 | Releases mouse button.<br> button can be `'Left'`, `'right'`, or `'middle'` |
-| click_mouse(button) 	| Simulates a full mouse click. One down event, one up event.<br> button can be `'Left'`, `'right'`, or `'middle'` |
-| double_click_mouse(button) | Two full mouse clicks. One down event, one up event. |
-| move_and_click(x,y,button) | convenience function: Move to coordinates 	and click mouse |
-| scroll_mouse_wheel(direction, clicks)  | Scrolls the mouse wheel either `'up'` or `'down'` X number of 'clicks'. |
-| add_to_clipboard(string)  | Copy text into clip board for later pasting. |
-| clear_clipboard() | Clear everything out of the clipboard |
-| take_screenshot(bounds=None) | NOTE: REQUIRES PYTHON IMAGE LIBRARY<br>Takes a screenshot of the entire desktop and returns it as a PIL `Image` object.<br><br>Use with `get_display_monitors` to target a specific screen, or pass in a tuple consisting of (`left`, `top`, `width`, `height`).|
-| key_press(key) | Presses a given key.<br>Input: `string`|
-| key_release(key) | Releases a given key.<br>Input: `string` |
-| type_string(input_string, delay=.005) | Convenience function for typing out strings.<br>delay = time between keystrokes |
-| type_backwards(input_string, delay=.05) | Types right to left. Because why not! |
-| start_program(full_path) | Launches a windows application. <br>Input type: `string`|  
-| paste() | Pastes the contents of the clipboard |
-| sleep(duration) | Pauses the robot for `duration` number of seconds. |
-| get_display_monitors() | Enumerates and returns a list of virtual screen coordinates for the attached display devices<br>output = [<br>&nbsp;&nbsp;&nbsp;&nbsp;(left, top, right, bottom), # Monitor 1<br>&nbsp;&nbsp;&nbsp;&nbsp;(left, top, right, bottom)  # Monitor 2<br>&nbsp;&nbsp;&nbsp;&nbsp;# etc... <br>] |
+|  add_to_clipboard(string)  |  Copy text into clip board for later pasting.   |
+|  clear_clipboard() |  Clear everything out of the clipboard   |
+|  click_mouse(button) 	|  Simulates a full mouse click. One down event, one up event.<br> button can be `'Left'`, `'right'`, or `'middle'`   |
+|  double_click_mouse(button) |  Two full mouse clicks. One down event, one up event.   |
+|  get_slipboard_data()  | Retrieves text from the Windows clipboard as a String  |
+|  get_display_monitors() |  Enumerates and returns a list of virtual screen coordinates for the attached display devices<br>output = [<br>&nbsp;&nbsp;&nbsp;&nbsp;(left, top, right, bottom), # Monitor 1<br>&nbsp;&nbsp;&nbsp;&nbsp;(left, top, right, bottom)  # Monitor 2<br>&nbsp;&nbsp;&nbsp;&nbsp;# etc... <br>]   |
+|  get_mouse_pos() 		|  Returns tuple of current mouse coordinates   |
+|  get_pixel(x, y) 	|  Returns the pixel color `tuple(R,G,B)` of the given screen coordinate  |
+|  key_press(key) |  Presses a given key.<br>Input: `string`  |
+|  key_release(key) |  Releases a given key.<br>Input: `string`   |
+|  mouse_down(button) |  Presses one mouse button.<br> button can be `'Left'`, `'right'`, or `'middle'`   |
+|  mouse_up(button)	 |  Releases mouse button.<br> button can be `'Left'`, `'right'`, or `'middle'`   |
+|  move_and_click(x,y,button) |  convenience function: Move to coordinates 	and click mouse   |
+|  paste() |  Pastes the contents of the clipboard   |
+|  press_and_release()  |  Simulates pressing a key: One down event, one release event | 
+|  read_from_clipboard() |  Retrieve text data from the clipboard.   |
+|  scroll_mouse_wheel(direction, clicks)  |  Scrolls the mouse wheel either `'up'` or `'down'` X number of 'clicks'.   |
+|  set_mouse_pos(x, y): |  Moves mouse pointer to given screen coordinates.   |
+|  sleep(duration) |  Pauses the robot for `duration` number of seconds.   |
+|  start_program(full_path) |  Launches a windows application. <br>Input type: `string`  |
+|  take_screenshot(bounds=None) |  NOTE: REQUIRES PYTHON IMAGE LIBRARY<br>Takes a screenshot of the entire desktop and returns it as a PIL `Image` object.<br><br>Use with `get_display_monitors` to target a specific screen, or pass in a tuple consisting of (`left`, `top`, `width`, `height`).  |
+|  type_backwards(input_string, delay=.05) |  Types right to left. Because why not!   |
+|  type_string(input_string, delay=.005) |  Convenience function for typing out strings.<br>delay = time between keystrokes   |
 
 
 
