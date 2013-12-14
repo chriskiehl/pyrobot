@@ -86,9 +86,8 @@ Updates
   
         from pyrobot import Robot, Keys
         robot = Robot() 
-        key = Keys() 
         
-        robot.press_and_release(key.forward_slash)
+        robot.press_and_release(Keys.forward_slash)
 
 
 
