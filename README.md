@@ -97,31 +97,32 @@ Doc
 ---  
 
 
-| Method                                | Summary                    |
-| --------------------------------------|-----------------------------
-|  add_to_clipboard(string)  |  Copy text into clip board for later pasting.   |
-|  clear_clipboard() |  Clear everything out of the clipboard   |
-|  click_mouse(button) 	|  Simulates a full mouse click. One down event, one up event.<br> button can be `'Left'`, `'right'`, or `'middle'`   |
-|  double_click_mouse(button) |  Two full mouse clicks. One down event, one up event.   |
-|  get_slipboard_data()  | Retrieves text from the Windows clipboard as a String  |
-|  get_display_monitors() |  Enumerates and returns a list of virtual screen coordinates for the attached display devices<br>output = [<br>&nbsp;&nbsp;&nbsp;&nbsp;(left, top, right, bottom), # Monitor 1<br>&nbsp;&nbsp;&nbsp;&nbsp;(left, top, right, bottom)  # Monitor 2<br>&nbsp;&nbsp;&nbsp;&nbsp;# etc... <br>]   |
-|  get_mouse_pos() 		|  Returns tuple of current mouse coordinates   |
-|  get_pixel(x, y) 	|  Returns the pixel color `tuple(R,G,B)` of the given screen coordinate  |
-|  key_press(key) |  Presses a given key.<br>Input: `string`  |
-|  key_release(key) |  Releases a given key.<br>Input: `string`   |
-|  mouse_down(button) |  Presses one mouse button.<br> button can be `'Left'`, `'right'`, or `'middle'`   |
-|  mouse_up(button)	 |  Releases mouse button.<br> button can be `'Left'`, `'right'`, or `'middle'`   |
-|  move_and_click(x,y,button) |  convenience function: Move to coordinates 	and click mouse   |
-|  paste() |  Pastes the contents of the clipboard   |
-|  press_and_release()  |  Simulates pressing a key: One down event, one release event | 
-|  read_from_clipboard() |  Retrieve text data from the clipboard.   |
-|  scroll_mouse_wheel(direction, clicks)  |  Scrolls the mouse wheel either `'up'` or `'down'` X number of 'clicks'.   |
-|  set_mouse_pos(x, y): |  Moves mouse pointer to given screen coordinates.   |
-|  sleep(duration) |  Pauses the robot for `duration` number of seconds.   |
-|  start_program(full_path) |  Launches a windows application. <br>Input type: `string`  |
-|  take_screenshot(bounds=None) |  NOTE: REQUIRES PYTHON IMAGE LIBRARY<br>Takes a screenshot of the entire desktop and returns it as a PIL `Image` object.<br><br>Use with `get_display_monitors` to target a specific screen, or pass in a tuple consisting of (`left`, `top`, `width`, `height`).  |
-|  type_backwards(input_string, delay=.05) |  Types right to left. Because why not!   |
-|  type_string(input_string, delay=.005) |  Convenience function for typing out strings.<br>delay = time between keystrokes   |
+
+| Method                      | Summary                     |
+| --------------------------- | --------------------------- |
+| add_to_clipboard(string) | Copy text into clip board for later pasting. |
+| clear_clipboard() | Clear everything out of the clipboard |
+| click_mouse(button) | Simulates a full mouse click. One down event, one up event.<br> button can be `'Left'`, `'right'`, or `'middle'` |
+| double_click_mouse(button) | Two full mouse clicks. One down event, one up event. |
+| get_slipboard_data() | Retrieves text from the Windows clipboard as a String |
+| get_display_monitors() | Enumerates and returns a list of virtual screen coordinates for the attached display devices<br>output = [<br>&nbsp;&nbsp;&nbsp;&nbsp;(left, top, right, bottom), # Monitor 1<br>&nbsp;&nbsp;&nbsp;&nbsp;(left, top, right, bottom)  # Monitor 2<br>&nbsp;&nbsp;&nbsp;&nbsp;# etc... <br>] |
+| get_mouse_pos() | Returns tuple of current mouse coordinates |
+| get_pixel(x, y) | Returns the pixel color `tuple(R,G,B)` of the given screen coordinate |
+| key_press(key) | Presses a given key.<br>Input: `string` |
+| key_release(key) | Releases a given key.<br>Input: `string` |
+| mouse_down(button) | Presses one mouse button.<br> button can be `'Left'`, `'right'`, or `'middle'` |
+| mouse_up(button) | Releases mouse button.<br> button can be `'Left'`, `'right'`, or `'middle'` |
+| move_and_click(x,y,button) | convenience function: Move to coordinates 	and click mouse |
+| paste() | Pastes the contents of the clipboard |
+| press_and_release() | Simulates pressing a key: One down event, one release event | 
+| read_from_clipboard() | Retrieve text data from the clipboard. |
+| scroll_mouse_wheel(direction, clicks) | Scrolls the mouse wheel either `'up'` or `'down'` X number of 'clicks'. |
+| set_mouse_pos(x, y): | Moves mouse pointer to given screen coordinates. |
+| sleep(duration) | Pauses the robot for `duration` number of seconds. |
+| start_program(full_path) | Launches a windows application. <br>Input type: `string` |
+| take_screenshot(bounds=None) | NOTE: REQUIRES PYTHON IMAGE LIBRARY<br>Takes a screenshot of the entire desktop and returns it as a PIL `Image` object.<br><br>Use with `get_display_monitors` to target a specific screen, or pass in a tuple consisting of (`left`, `top`, `width`, `height`). |
+| type_backwards(input_string, delay=.05) | Types right to left. Because why not! |
+| type_string(input_string, delay=.005) | Convenience function for typing out strings.<br>delay = time between keystrokes |
 
 
 
