@@ -97,7 +97,7 @@ Doc
 ---  
 
 
-#####Mouse
+####Mouse
 
 | Method                      | Summary                     |
 | --------------------------- | --------------------------- |
@@ -111,7 +111,7 @@ Doc
 | scroll_mouse_wheel(direction, clicks) | Scrolls the mouse wheel either `'up'` or `'down'` X number of 'clicks'. |
 
 
-#####Keys
+####Keys
 
 | Method                      | Summary                     |
 | --------------------------- | --------------------------- |
@@ -120,7 +120,7 @@ Doc
 | press_and_release() | Simulates pressing a key: One down event, one release event | 
 
 
-#####Clipboard
+####Clipboard
 
 | Method                      | Summary                     |
 | --------------------------- | --------------------------- |
@@ -130,7 +130,7 @@ Doc
 | paste() | Pastes the contents of the clipboard |
 
 
-#####Screen
+####Screen
 
 | Method                      | Summary                     |
 | --------------------------- | --------------------------- |
@@ -139,7 +139,7 @@ Doc
 | take_screenshot(bounds=None) | NOTE: REQUIRES PYTHON IMAGE LIBRARY<br>Takes a screenshot of the entire desktop and returns it as a PIL `Image` object.<br><br>Use with `get_display_monitors` to target a specific screen, or pass in a tuple consisting of (`left`, `top`, `width`, `height`). |
 
 
-#####Misc
+####Misc
 
 | Method                      | Summary                     |
 | --------------------------- | --------------------------- |
