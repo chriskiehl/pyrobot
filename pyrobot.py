@@ -575,7 +575,7 @@ class Robot(object):
 
 
 
-	def _enumerate_windows(self):
+	def _enumerate_windows(self, visible=True):
 		'''
 		Loops through the titles of all the "windows."
 		Spits out too much junk to to be of immidiate use. 
@@ -595,8 +595,11 @@ class Robot(object):
 				title,
 				l + 1
 				)
-
-			titles.append(''.join(title))
+                        if lParam:
+                                if windll.user32.IsWindowVisible(hwnd) == 0:
+                                        #Window is not visible, don't add it to the list
+                                        return
+			titles.append(''.join(title).strip("\x00"))
 
 		BoolEnumWindowsProc = WINFUNCTYPE(
 			ctypes.c_bool, 
@@ -604,10 +607,15 @@ class Robot(object):
 			ctypes.wintypes.LPARAM 
 			)
 
-
 		mycallback = BoolEnumWindowsProc(enumWindowsProc)
-		print windll.user32.EnumWindows(mycallback, 0)
-		titles = [t for t in titles if t is not None]
+
+                #If we want to enumerate only visibles
+		if visible:
+                        windll.user32.EnumWindows(mycallback, True)
+                else:
+                        windll.user32.EnumWindows(mycallback, False)
+                
+		titles = [t for t in titles if t is not ""]
 		for i in titles:
 			print i
 
@@ -922,8 +930,7 @@ def get_cpus():
 
 if __name__ == '__main__':
 	robot = Robot()
-	text = robot.get_clipboard_data()
-	print text
+	robot._enumerate_windows()
 
 
 
