@@ -619,6 +619,22 @@ class Robot(object):
 		for i in titles:
 			print i
 
+		return titles
+
+	def wait_for_window(self, wname, timeout=None, interval=0.005):
+                start_time = time.time()
+                while True:
+                        if wname in self._enumerate_windows():
+                                #If the window exists return True
+                                return True
+
+                        if timeout is not None and time.time() - start_time > timeout:
+                                #If we passed the timeout, return False
+                                #Not sure if it's best to raise an Exception though
+                                return False
+
+                        time.sleep(interval)
+
 
 	def get_display_monitors(self):
 		''' 
@@ -930,7 +946,7 @@ def get_cpus():
 
 if __name__ == '__main__':
 	robot = Robot()
-	robot._enumerate_windows()
+	print robot.wait_for_window("lol: Bloc de notas")
 
 
 
