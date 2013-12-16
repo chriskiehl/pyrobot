@@ -107,7 +107,7 @@ Doc
 | move_and_click(x,y,button) | convenience function: Move to coordinates and click mouse |
 | mouse_down(button) | Presses one mouse button. <br> button can be `'Left'`, `'right'`, or `'middle'` |
 | mouse_up(button) | Releases mouse button. <br> button can be `'Left'`, `'right'`, or `'middle'` |
-| scroll_mouse_wheel(direction, clicks) | Scrolls the mouse wheel either `'up'` or `'down'` X number of 'clicks'. |
+| scroll_mouse_wheel(direction, clicks) | Scrolls the mouse wheel either `'up'` or `'down'` X number of 'clicks'.  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;|
 
 
 ####Keys
@@ -116,7 +116,7 @@ Doc
 | --------------------------- | --------------------------- |
 | key_press(key) | Presses a given key. <br>Input: `string` or `Keys.*` constant |
 | key_release(key) | Releases a given key. <br>Input: `string` or `Keys.*` constant |
-| press_and_release() | Simulates pressing a key: One down event, one release event &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 
+| press_and_release() | Simulates pressing a key: One down event, one release event  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;| 
 
 
 ####Clipboard
@@ -125,8 +125,8 @@ Doc
 | --------------------------- | --------------------------- |
 | add_to_clipboard(string) | Copy text into clip board for later pasting. |
 | clear_clipboard() | Clear everything out of the clipboard |
-| get_clipboard_data() | Retrieves text from the Windows clipboard as a String &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
-| paste() | Pastes the contents of the clipboard |
+| get_clipboard_data() | Retrieves text from the Windows clipboard as a String |
+| paste() | Pastes the contents of the clipboard &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;|
 
 
 ####Screen
@@ -135,7 +135,7 @@ Doc
 | --------------------------- | --------------------------- |
 | get_display_monitors() | Enumerates and returns a list of virtual screen coordinates for the attached display devices<br>output = [<br>&nbsp;&nbsp;&nbsp;&nbsp;(left, top, right, bottom), # Monitor 1<br>&nbsp;&nbsp;&nbsp;&nbsp;(left, top, right, bottom)  # Monitor 2<br>&nbsp;&nbsp;&nbsp;&nbsp;# etc... <br>] |
 | get_pixel(x, y) | Returns the pixel color `tuple(R,G,B)` of the given screen coordinate |
-| take_screenshot(bounds=None) | NOTE: REQUIRES PYTHON IMAGE LIBRARY<br>Takes a screenshot of the entire desktop and returns it as a PIL `Image` object.<br><br>Use with `get_display_monitors` to target a specific screen, or pass in a tuple consisting of (`left`, `top`, `width`, `height`). |
+| take_screenshot(bounds=None) | NOTE: REQUIRES PYTHON IMAGE LIBRARY<br>Takes a screenshot of the entire desktop and returns it as a PIL `Image` object.<br><br>Use with `get_display_monitors` to target a specific screen, or pass in a tuple consisting of (`left`, `top`, `width`, `height`). &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;|
 
 
 ####Misc
@@ -145,7 +145,7 @@ Doc
 | sleep(duration) | Pauses the robot for `duration` number of seconds. |
 | start_program(full_path) | Launches a windows application. <br>Input type: `string` |
 | type_backwards(input_string, delay=.05) | Types right to left. Because why not! |
-| type_string(input_string, delay=.005) | Convenience function for typing out strings.<br>delay = time between keystrokes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
+| type_string(input_string, delay=.005) | Convenience function for typing out strings.<br>delay = time between keystrokes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;|
 
 
 
