@@ -116,7 +116,7 @@ Doc
 | --------------------------- | --------------------------- |
 | key_press(key) | Presses a given key. <br>Input: `string` or `Keys.*` constant |
 | key_release(key) | Releases a given key. <br>Input: `string` or `Keys.*` constant |
-| press_and_release() | Simulates pressing a key: One down event, one release event | 
+| press_and_release() | Simulates pressing a key: One down event, one release event &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 
 
 
 ####Clipboard
@@ -125,7 +125,7 @@ Doc
 | --------------------------- | --------------------------- |
 | add_to_clipboard(string) | Copy text into clip board for later pasting. |
 | clear_clipboard() | Clear everything out of the clipboard |
-| get_clipboard_data() | Retrieves text from the Windows clipboard as a String |
+| get_clipboard_data() | Retrieves text from the Windows clipboard as a String &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
 | paste() | Pastes the contents of the clipboard |
 
 
@@ -145,7 +145,7 @@ Doc
 | sleep(duration) | Pauses the robot for `duration` number of seconds. |
 | start_program(full_path) | Launches a windows application. <br>Input type: `string` |
 | type_backwards(input_string, delay=.05) | Types right to left. Because why not! |
-| type_string(input_string, delay=.005) | Convenience function for typing out strings.<br>delay = time between keystrokes |
+| type_string(input_string, delay=.005) | Convenience function for typing out strings.<br>delay = time between keystrokes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|
 
 
 
