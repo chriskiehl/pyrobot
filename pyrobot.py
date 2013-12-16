@@ -616,8 +616,6 @@ class Robot(object):
                         windll.user32.EnumWindows(mycallback, False)
                 
 		titles = [t for t in titles if t is not ""]
-		for i in titles:
-			print i
 
 		return titles
 
@@ -946,7 +944,7 @@ def get_cpus():
 
 if __name__ == '__main__':
 	robot = Robot()
-	print robot.wait_for_window("lol: Bloc de notas")
+	print robot._enumerate_windows()
 
 
 
