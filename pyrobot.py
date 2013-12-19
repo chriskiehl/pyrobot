@@ -94,44 +94,44 @@ class BITMAPINFO(ctypes.Structure):
 
 
 class MOUSEINPUT(Structure):
-    _fields_ = [
-        ('dx', LONG),
-        ('dy', LONG),
-        ('mouseData', DWORD),
-        ('dwFlags', DWORD),
-        ('time', DWORD),
-        ('dwExtraInfo', POINTER(ULONG)),
-    ]
+	_fields_ = [
+		('dx', LONG),
+		('dy', LONG),
+		('mouseData', DWORD),
+		('dwFlags', DWORD),
+		('time', DWORD),
+		('dwExtraInfo', POINTER(ULONG)),
+	]
 
 class KEYBDINPUT(Structure):
-    _fields_ = [
-        ('wVk', WORD),
-        ('wScan', WORD),
-        ('dwFlags', DWORD),
-        ('time', DWORD),
-        ('dwExtraInfo', POINTER(ULONG)),
-    ]
+	_fields_ = [
+		('wVk', WORD),
+		('wScan', WORD),
+		('dwFlags', DWORD),
+		('time', DWORD),
+		('dwExtraInfo', POINTER(ULONG)),
+	]
 
 class HARDWAREINPUT(Structure):
-    _fields_ = [
-        ('uMsg', DWORD),
-        ('wParamL', WORD),
-        ('wParamH', DWORD)
-    ]
+	_fields_ = [
+		('uMsg', DWORD),
+		('wParamL', WORD),
+		('wParamH', DWORD)
+	]
 
 class INPUT(Structure):
-    class _I(Union):
-        _fields_ = [
-            ('mi', MOUSEINPUT),
-            ('ki', KEYBDINPUT),
-            ('hi', HARDWAREINPUT),
-        ]
+	class _I(Union):
+		_fields_ = [
+			('mi', MOUSEINPUT),
+			('ki', KEYBDINPUT),
+			('hi', HARDWAREINPUT),
+		]
 
-    _anonymous_ = 'i'
-    _fields_ = [
-        ('type', DWORD),
-        ('i', _I),
-    ]
+	_anonymous_ = 'i'
+	_fields_ = [
+		('type', DWORD),
+		('i', _I),
+	]
 
 
 class KeyConsts(object):
@@ -145,9 +145,8 @@ class KeyConsts(object):
 		self.special_map  = "` 1 2 3 4 5 6 7 8 9 0 - = \\ ] [ ' ; / . ,".split()
 
 class Keys(object): 
-        space=32;left_mouse_button=1;right_mouse_button=2;control_break_processing=3;middle_mouse_button_three_button_mouse=4;x1_mouse_button=5;x2_mouse_button=6;undefined=7;backspace=8;tab=9;reserved=10;clear=12;enter=13;undefined=14;shift=16;ctrl=17;alt=18;pause=19;caps_lock=20;undefined=22;undefined=26;esc=27;spacebar=32;page_up=33;page_down=34;end=35;home=36;left_arrow=37;up_arrow=38;right_arrow=39;down_arrow=40;select=41;print_key=42;execute=43;print_screen=44;ins=45;delete=46;help_key=47;zero=48;one=49;two=50;three=51;four=52;five=53;six=54;seven=55;eight=56;nine=57;undefined=18;a=65;b=66;c=67;d=68;e=69;f=70;g=71;h=72;i=73;j=74;k=75;l=76;m=77;n=78;o=79;p=80;q=81;r=82;s=83;t=84;u=85;v=86;w=87;x=88;y=89;z=90;left_windows__natural_board=91;right_windows__natural_board=92;applications__natural_board=93;reserved=94;computer_sleep=95;numeric_pad_0=96;numeric_pad_1=97;numeric_pad_2=98;numeric_pad_3=99;numeric_pad_4=100;numeric_pad_5=101;numeric_pad_6=102;numeric_pad_7=103;numeric_pad_8=104;numeric_pad_9=105;multiply=106;add=107;separator=108;subtract=109;decimal=110;divide=111;f1=112;f2=113;f3=114;f4=115;f5=116;f6=117;f7=118;f8=119;f9=120;f10=121;f11=122;f12=123;f13=124;f14=125;f15=126;f16=127;f17=128;f18=129;f19=130;f20=131;f21=132;f22=133;f23=134;f24=135;unassigned=136;num_lock=144;scroll_lock=145;oem_specific=146;unassigned=151;left_shift=160;right_shift=161;left_control=162;right_control=163;left_menu=164;right_menu=165;browser_back=166;browser_forward=167;browser_refresh=168;browser_stop=169;browser_search=170;browser_favorites=171;browser_start_and_home=172;volume_mute=173;volume_down=174;volume_up=175;next_track=176;previous_track=177;stop_media=178;play_pause_media=179;start_mail=180;select_media=181;start_application_1=182;start_application_2=183;reserved=184;semicolon=186;equals=187;comma=188;minus=189;peiod=190;forward_slash=191;back_tick=192;reserved=193;unassigned=216;open_brace=219;backslash=220;close_brace=221;apostrophe=222;reserved=224;oem_specific=225;either_the_angle_bracket__or_the_backslash__on_the_rt_102__board=226;oem_specific=227;oem_specific=230;unassigned=232;oem_specific=233;attn=246;crsel=247;exsel=248;erase_eof=249;play=250;zoom=251;reserved=252;pa1=253;clear=254;
+	space=32;left_mouse_button=1;right_mouse_button=2;control_break_processing=3;middle_mouse_button_three_button_mouse=4;x1_mouse_button=5;x2_mouse_button=6;undefined=7;backspace=8;tab=9;reserved=10;clear=12;enter=13;undefined=14;shift=16;ctrl=17;alt=18;pause=19;caps_lock=20;undefined=22;undefined=26;esc=27;spacebar=32;page_up=33;page_down=34;end=35;home=36;left_arrow=37;up_arrow=38;right_arrow=39;down_arrow=40;select=41;print_key=42;execute=43;print_screen=44;ins=45;delete=46;help_key=47;zero=48;one=49;two=50;three=51;four=52;five=53;six=54;seven=55;eight=56;nine=57;undefined=18;a=65;b=66;c=67;d=68;e=69;f=70;g=71;h=72;i=73;j=74;k=75;l=76;m=77;n=78;o=79;p=80;q=81;r=82;s=83;t=84;u=85;v=86;w=87;x=88;y=89;z=90;left_windows__natural_board=91;right_windows__natural_board=92;applications__natural_board=93;reserved=94;computer_sleep=95;numeric_pad_0=96;numeric_pad_1=97;numeric_pad_2=98;numeric_pad_3=99;numeric_pad_4=100;numeric_pad_5=101;numeric_pad_6=102;numeric_pad_7=103;numeric_pad_8=104;numeric_pad_9=105;multiply=106;add=107;separator=108;subtract=109;decimal=110;divide=111;f1=112;f2=113;f3=114;f4=115;f5=116;f6=117;f7=118;f8=119;f9=120;f10=121;f11=122;f12=123;f13=124;f14=125;f15=126;f16=127;f17=128;f18=129;f19=130;f20=131;f21=132;f22=133;f23=134;f24=135;unassigned=136;num_lock=144;scroll_lock=145;oem_specific=146;unassigned=151;left_shift=160;right_shift=161;left_control=162;right_control=163;left_menu=164;right_menu=165;browser_back=166;browser_forward=167;browser_refresh=168;browser_stop=169;browser_search=170;browser_favorites=171;browser_start_and_home=172;volume_mute=173;volume_down=174;volume_up=175;next_track=176;previous_track=177;stop_media=178;play_pause_media=179;start_mail=180;select_media=181;start_application_1=182;start_application_2=183;reserved=184;semicolon=186;equals=187;comma=188;minus=189;peiod=190;forward_slash=191;back_tick=192;reserved=193;unassigned=216;open_brace=219;backslash=220;close_brace=221;apostrophe=222;reserved=224;oem_specific=225;either_the_angle_bracket__or_the_backslash__on_the_rt_102__board=226;oem_specific=227;oem_specific=230;unassigned=232;oem_specific=233;attn=246;crsel=247;exsel=248;erase_eof=249;play=250;zoom=251;reserved=252;pa1=253;clear=254;
 
-        
 class Robot(object):
 	'''
 	A pure python windows automation library loosely modeled after Java's Robot Class.
@@ -609,29 +608,29 @@ class Robot(object):
 
 		mycallback = BoolEnumWindowsProc(enumWindowsProc)
 
-                #If we want to enumerate only visibles
+		#If we want to enumerate only visibles
 		if visible:
-                        windll.user32.EnumWindows(mycallback, True)
-                else:
-                        windll.user32.EnumWindows(mycallback, False)
-                
+			windll.user32.EnumWindows(mycallback, True)
+		else:
+			windll.user32.EnumWindows(mycallback, False)
+
 		titles = [t for t in titles if t is not ""]
 
 		return titles
 
 	def wait_for_window(self, wname, timeout=None, interval=0.005):
-                start_time = time.time()
-                while True:
-                        if wname in self._enumerate_windows():
-                                #If the window exists return True
-                                return True
+		start_time = time.time()
+		while True:
+			if wname in self._enumerate_windows():
+				#If the window exists return True
+					return True
 
-                        if timeout is not None and time.time() - start_time > timeout:
-                                #If we passed the timeout, return False
-                                #Not sure if it's best to raise an Exception though
-                                return False
+			if timeout is not None and time.time() - start_time > timeout:
+				#If we passed the timeout, return False
+				#Not sure if it's best to raise an Exception though
+				return False
 
-                        time.sleep(interval)
+			time.sleep(interval)
 
 
 	def get_display_monitors(self):
