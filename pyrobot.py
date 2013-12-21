@@ -594,10 +594,10 @@ class Robot(object):
 				title,
 				l + 1
 				)
-                        if lParam:
-                                if windll.user32.IsWindowVisible(hwnd) == 0:
-                                        #Window is not visible, don't add it to the list
-                                        return
+			if lParam:
+				if windll.user32.IsWindowVisible(hwnd) == 0:
+					#Window is not visible, don't add it to the list
+					return
 			titles.append(''.join(title).strip("\x00"))
 
 		BoolEnumWindowsProc = WINFUNCTYPE(
@@ -619,10 +619,13 @@ class Robot(object):
 		return titles
 
 	def wait_for_window(self, wname, timeout=None, interval=0.005):
+		if timeout < 0:
+			raise ValueError("'timeout' must be a positive number")
 		start_time = time.time()
 		while True:
-			if wname in self._enumerate_windows():
-				#If the window exists return True
+			for window in self._enumerate_windows():
+				if wname in window:
+					#If the window exists return True
 					return True
 
 			if timeout is not None and time.time() - start_time > timeout:
@@ -944,6 +947,7 @@ def get_cpus():
 if __name__ == '__main__':
 	robot = Robot()
 	print robot._enumerate_windows()
+	print robot.wait_for_window("GitHub", timeout=-1)
 
 
 
