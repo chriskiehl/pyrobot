@@ -618,17 +618,17 @@ class Robot(object):
 
 		return titles
 
-	def wait_for_window(self, wname, timeout=None, interval=0.005):
+	def wait_for_window(self, wname, timeout=0, interval=0.005):
 		if timeout < 0:
 			raise ValueError("'timeout' must be a positive number")
 		start_time = time.time()
 		while True:
 			for window in self._enumerate_windows():
-				if wname in window:
+				if wname.lower() in window.lower():
 					#If the window exists return True
 					return True
 
-			if timeout is not None and time.time() - start_time > timeout:
+			if time.time() - start_time > timeout:
 				#If we passed the timeout, return False
 				#Not sure if it's best to raise an Exception though
 				return False
@@ -947,7 +947,7 @@ def get_cpus():
 if __name__ == '__main__':
 	robot = Robot()
 	print robot._enumerate_windows()
-	print robot.wait_for_window("GitHub", timeout=-1)
+	print robot.wait_for_window("GitHub")
 
 
 
