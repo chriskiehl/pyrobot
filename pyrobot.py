@@ -600,6 +600,8 @@ class Robot(object):
 					return
 			titles.append(''.join(title).strip("\x00"))
 
+			return True #Needed to keep looping
+
 		BoolEnumWindowsProc = WINFUNCTYPE(
 			ctypes.c_bool, 
 			ctypes.wintypes.HWND, 
