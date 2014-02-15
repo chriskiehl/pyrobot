@@ -5,7 +5,7 @@ This will likely develop slowly.. I have horrible testing practices...
 import sys
 sys.path.insert(0, '..')
 
-import Image
+from PIL import Image
 import unittest
 from ctypes import *
 from pyrobot import Robot
