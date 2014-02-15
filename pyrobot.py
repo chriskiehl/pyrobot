@@ -35,20 +35,25 @@ from ctypes import *
 from ctypes.wintypes import *
 
 
+user32 = windll.user32
+gdi = windll.gdi32
+kernel32 = windll.kernel32
+cdll = cdll.msvcrt
+
 
 class WIN32CON(object):
-	def __init__(self):
-		self.LEFT_DOWN = 0x0002
-		self.LEFT_UP = 0x0004
-		self.MIDDLE_DOWN = 0x0020
-		self.MIDDLE_UP = 0x0040
-		self.MOVE = 0x0001
-		self.RIGHT_DOWN = 0x0008
-		self.RIGHT_UP = 0x0010
-		self.WHEEL = 0x0800
-		self.XDOWN = 0x0080
-		self.XUP = 0x0100
-		self.HWHEEL = 0x01000
+	LEFT_DOWN = 0x0002
+	LEFT_UP = 0x0004
+	MIDDLE_DOWN = 0x0020
+	MIDDLE_UP = 0x0040
+	MOVE = 0x0001
+	RIGHT_DOWN = 0x0008
+	RIGHT_UP = 0x0010
+	WHEEL = 0x0800
+	XDOWN = 0x0080
+	XUP = 0x0100
+	HWHEEL = 0x01000
+win32con = WIN32CON
 
 
 class BITMAP(ctypes.Structure):
@@ -62,6 +67,7 @@ class BITMAP(ctypes.Structure):
 		('bmBits', c_void_p),
 	]
 
+
 class BITMAPFILEHEADER(ctypes.Structure):
 	_fields_ = [
 		('bfType', ctypes.c_short),
@@ -70,6 +76,7 @@ class BITMAPFILEHEADER(ctypes.Structure):
 		('bfReserved2', ctypes.c_short),
 		('bfOffBits', ctypes.c_uint32)
 	]
+
 
 class BITMAPINFOHEADER(ctypes.Structure):
 	_fields_ = [
@@ -85,6 +92,7 @@ class BITMAPINFOHEADER(ctypes.Structure):
 		('biClrUsed', ctypes.c_uint32),
 		('biClrImportant', ctypes.c_uint32)
 	]
+
 
 class BITMAPINFO(ctypes.Structure):
 	_fields_ = [
@@ -103,6 +111,7 @@ class MOUSEINPUT(Structure):
 		('dwExtraInfo', POINTER(ULONG)),
 	]
 
+
 class KEYBDINPUT(Structure):
 	_fields_ = [
 		('wVk', WORD),
@@ -112,12 +121,14 @@ class KEYBDINPUT(Structure):
 		('dwExtraInfo', POINTER(ULONG)),
 	]
 
+
 class HARDWAREINPUT(Structure):
 	_fields_ = [
 		('uMsg', DWORD),
 		('wParamL', WORD),
 		('wParamH', DWORD)
 	]
+
 
 class INPUT(Structure):
 	class _I(Union):
@@ -140,8 +151,188 @@ class KeyConsts(object):
 	special_keys = '~ ! @ # $ % ^ & * ( ) _ + | } { " : ? > <'.split()
 	special_map  = "` 1 2 3 4 5 6 7 8 9 0 - = \\ ] [ ' ; / . ,".split()
 
+
 class Keys(object): 
-	space=32;left_mouse_button=1;right_mouse_button=2;control_break_processing=3;middle_mouse_button_three_button_mouse=4;x1_mouse_button=5;x2_mouse_button=6;undefined=7;backspace=8;tab=9;reserved=10;clear=12;enter=13;undefined=14;shift=16;ctrl=17;alt=18;pause=19;caps_lock=20;undefined=22;undefined=26;esc=27;spacebar=32;page_up=33;page_down=34;end=35;home=36;left_arrow=37;up_arrow=38;right_arrow=39;down_arrow=40;select=41;print_key=42;execute=43;print_screen=44;ins=45;delete=46;help_key=47;zero=48;one=49;two=50;three=51;four=52;five=53;six=54;seven=55;eight=56;nine=57;undefined=18;a=65;b=66;c=67;d=68;e=69;f=70;g=71;h=72;i=73;j=74;k=75;l=76;m=77;n=78;o=79;p=80;q=81;r=82;s=83;t=84;u=85;v=86;w=87;x=88;y=89;z=90;left_windows__natural_board=91;right_windows__natural_board=92;applications__natural_board=93;reserved=94;computer_sleep=95;numeric_pad_0=96;numeric_pad_1=97;numeric_pad_2=98;numeric_pad_3=99;numeric_pad_4=100;numeric_pad_5=101;numeric_pad_6=102;numeric_pad_7=103;numeric_pad_8=104;numeric_pad_9=105;multiply=106;add=107;separator=108;subtract=109;decimal=110;divide=111;f1=112;f2=113;f3=114;f4=115;f5=116;f6=117;f7=118;f8=119;f9=120;f10=121;f11=122;f12=123;f13=124;f14=125;f15=126;f16=127;f17=128;f18=129;f19=130;f20=131;f21=132;f22=133;f23=134;f24=135;unassigned=136;num_lock=144;scroll_lock=145;oem_specific=146;unassigned=151;left_shift=160;right_shift=161;left_control=162;right_control=163;left_menu=164;right_menu=165;browser_back=166;browser_forward=167;browser_refresh=168;browser_stop=169;browser_search=170;browser_favorites=171;browser_start_and_home=172;volume_mute=173;volume_down=174;volume_up=175;next_track=176;previous_track=177;stop_media=178;play_pause_media=179;start_mail=180;select_media=181;start_application_1=182;start_application_2=183;reserved=184;semicolon=186;equals=187;comma=188;minus=189;peiod=190;forward_slash=191;back_tick=192;reserved=193;unassigned=216;open_brace=219;backslash=220;close_brace=221;apostrophe=222;reserved=224;oem_specific=225;either_the_angle_bracket__or_the_backslash__on_the_rt_102__board=226;oem_specific=227;oem_specific=230;unassigned=232;oem_specific=233;attn=246;crsel=247;exsel=248;erase_eof=249;play=250;zoom=251;reserved=252;pa1=253;clear=254;
+	space=32
+	left_mouse_button=1
+	right_mouse_button=2
+	control_break_processing=3
+	middle_mouse_button_three_button_mouse=4
+	x1_mouse_button=5
+	x2_mouse_button=6
+	undefined=7
+	backspace=8
+	tab=9
+	reserved=10
+	clear=12
+	enter=13
+	undefined=14
+	shift=16
+	ctrl=17
+	alt=18
+	pause=19;
+	caps_lock=20
+	undefined=22
+	undefined=26
+	esc=27
+	spacebar=32
+	page_up=33
+	page_down=34
+	end=35
+	home=36
+	left_arrow=37
+	up_arrow=38
+	right_arrow=39
+	down_arrow=40
+	select=41
+	print_key=42
+	execute=43
+	print_screen=44
+	ins=45
+	delete=46
+	help_key=47
+	zero=48
+	one=49
+	two=50
+	three=51
+	four=52
+	five=53
+	six=54
+	seven=55
+	eight=56
+	nine=57
+	undefined=18
+	a=65
+	b=66
+	c=67
+	d=68
+	e=69
+	f=70
+	g=71
+	h=72
+	i=73
+	j=74
+	k=75
+	l=76
+	m=77
+	n=78
+	o=79
+	p=80
+	q=81
+	r=82
+	s=83
+	t=84
+	u=85
+	v=86
+	w=87
+	x=88
+	y=89
+	z=90
+	left_windows__natural_board=91
+	right_windows__natural_board=92
+	applications__natural_board=93
+	reserved=94
+	computer_sleep=95
+	numeric_pad_0=96
+	numeric_pad_1=97
+	numeric_pad_2=98
+	numeric_pad_3=99
+	numeric_pad_4=100
+	numeric_pad_5=101
+	numeric_pad_6=102
+	numeric_pad_7=103
+	numeric_pad_8=104
+	numeric_pad_9=105
+	multiply=106
+	add=107
+	separator=108
+	subtract=109
+	decimal=110
+	divide=111
+	f1=112
+	f2=113
+	f3=114
+	f4=115
+	f5=116
+	f6=117
+	f7=118
+	f8=119
+	f9=120
+	f10=121
+	f11=122
+	f12=123
+	f13=124
+	f14=125
+	f15=126
+	f16=127
+	f17=128
+	f18=129
+	f19=130
+	f20=131
+	f21=132
+	f22=133
+	f23=134
+	f24=135
+	unassigned=136
+	num_lock=144
+	scroll_lock=145
+	oem_specific=146
+	unassigned=151
+	left_shift=160
+	right_shift=161
+	left_control=162
+	right_control=163
+	left_menu=164
+	right_menu=165
+	browser_back=166
+	browser_forward=167
+	browser_refresh=168
+	browser_stop=169
+	browser_search=170
+	browser_favorites=171
+	browser_start_and_home=172
+	volume_mute=173
+	volume_down=174
+	volume_up=175
+	next_track=176
+	previous_track=177
+	stop_media=178
+	play_pause_media=179
+	start_mail=180
+	select_media=181
+	start_application_1=182
+	start_application_2=183
+	reserved=184
+	semicolon=186
+	equals=187
+	comma=188
+	minus=189
+	peiod=190
+	forward_slash=191
+	back_tick=192
+	reserved=193
+	unassigned=216
+	open_brace=219
+	backslash=220
+	close_brace=221
+	apostrophe=222
+	reserved=224
+	oem_specific=225
+	either_the_angle_bracket__or_the_backslash__on_the_rt_102__board=226
+	oem_specific=227
+	oem_specific=230
+	unassigned=232
+	oem_specific=233
+	attn=246
+	crsel=247
+	exsel=248
+	erase_eof=249
+	play=250
+	zoom=251
+	reserved=252
+	pa1=253
+	clear=254
+
 
 class Robot(object):
 	'''
@@ -149,19 +340,16 @@ class Robot(object):
 	'''
 
 	def __init__(self):
-		self.windll =windll.kernel32
-		self.cdll = cdll.msvcrt
-		self.win32con = WIN32CON()
 		self.press_events = {
-			'left' :  (self.win32con.LEFT_DOWN, None, None, None, None), 
-			'right':  (self.win32con.RIGHT_DOWN, None, None, None, None), 
-			'middle': (self.win32con.MIDDLE_DOWN, None, None, None, None)
+			'left' :  (win32con.LEFT_DOWN, None, None, None, None), 
+			'right':  (win32con.RIGHT_DOWN, None, None, None, None), 
+			'middle': (win32con.MIDDLE_DOWN, None, None, None, None)
 		}
 
 		self.release_events = {
-			'left' :  (self.win32con.LEFT_UP, None, None, None, None), 
-			'right':  (self.win32con.RIGHT_UP, None, None, None, None), 
-			'middle': (self.win32con.MIDDLE_UP, None, None, None, None)
+			'left' :  (win32con.LEFT_UP, None, None, None, None), 
+			'right':  (win32con.RIGHT_UP, None, None, None, None), 
+			'middle': (win32con.MIDDLE_UP, None, None, None, None)
 		}
 
 		self.keys = KeyConsts
@@ -170,23 +358,23 @@ class Robot(object):
 		'''
 		Moves mouse pointer to given screen coordinates.
 		'''
-		windll.user32.SetCursorPos(x,y)
+		user32.SetCursorPos(x,y)
 
 	def get_mouse_pos(self):
 		'''
 		Returns current mouse coordinates
 		'''
 		coords = pointer(c_long(0))
-		windll.user32.GetCursorPos(coords)
+		user32.GetCursorPos(coords)
 		return (coords[0], coords[1])
 
 	def get_pixel(self, x, y):
 		'''
 		Returns the pixel color of the given screen coordinate
 		'''
-		gdi= windll.gdi32
+		
 		RGBInt = gdi.GetPixel(
-			windll.user32.GetDC(0),
+			user32.GetDC(0),
 			x, y
 		)
 		red = RGBInt & 255
@@ -198,7 +386,7 @@ class Robot(object):
 		'''
 		Presses one mouse button. Left, right, or middle
 		'''
-		windll.user32.mouse_event(
+		user32.mouse_event(
 			*self.press_events[button.lower()]
 		)
 		# time.sleep(.2)
@@ -207,7 +395,7 @@ class Robot(object):
 		'''
 		Releases mouse button. Left, right, or middle
 		'''
-		windll.user32.mouse_event(
+		user32.mouse_event(
 			*self.release_events[button.lower()]
 		)
 
@@ -243,10 +431,10 @@ class Robot(object):
 
 
 	def _scrollup(self):
-		windll.user32.mouse_event(self.win32con.WHEEL, None, None, 120, None)
+		user32.mouse_event(self.win32con.WHEEL, None, None, 120, None)
 
 	def _scrolldown(self):
-		windll.user32.mouse_event(self.win32con.WHEEL, None, None, -120, None)
+		user32.mouse_event(self.win32con.WHEEL, None, None, -120, None)
 
 	def get_clipboard_data(self):
 		'''
@@ -254,11 +442,11 @@ class Robot(object):
 		as a String
 		'''
 		CF_TEXT = 1
-		windll.user32.OpenClipboard(None)
-		hglb = windll.user32.GetClipboardData(CF_TEXT)
+		user32.OpenClipboard(None)
+		hglb = user32.GetClipboardData(CF_TEXT)
 		
-		text_ptr = c_char_p(windll.kernel32.GlobalLock(hglb))
-		windll.kernel32.GlobalUnlock(hglb)
+		text_ptr = c_char_p(kernel32.GlobalLock(hglb))
+		kernel32.GlobalUnlock(hglb)
 
 		return text_ptr.value
 
@@ -269,30 +457,30 @@ class Robot(object):
 		# This is more or less ripped right for MSDN. 
 		GHND = 0x0042
 		# Allocate at
-		hGlobalMemory = windll.kernel32.GlobalAlloc(GHND, len(bytes(string))+1)
+		hGlobalMemory = kernel32.GlobalAlloc(GHND, len(bytes(string))+1)
 		# Lock it
-		lpGlobalMemory = windll.kernel32.GlobalLock(hGlobalMemory)
+		lpGlobalMemory = kernel32.GlobalLock(hGlobalMemory)
 		# copy it
-		lpGlobalMemory = windll.kernel32.lstrcpy(lpGlobalMemory, string)
+		lpGlobalMemory = kernel32.lstrcpy(lpGlobalMemory, string)
 		# unlock it
-		windll.kernel32.GlobalUnlock(lpGlobalMemory)
+		kernel32.GlobalUnlock(lpGlobalMemory)
 		# open it
-		windll.user32.OpenClipboard(None)
+		user32.OpenClipboard(None)
 		# empty it
-		windll.user32.EmptyClipboard()
+		user32.EmptyClipboard()
 		# add it
-		hClipMemory = windll.user32.SetClipboardData(1, hGlobalMemory) # 1 = CF_TEXT
+		hClipMemory = user32.SetClipboardData(1, hGlobalMemory) # 1 = CF_TEXT
 		# close it
-		windll.user32.CloseClipboard()
+		user32.CloseClipboard()
 		# Technologic
 
 	def clear_clipboard(self):
 		'''
 		Clear everything out of the clipboard
 		'''
-		windll.user32.OpenClipboard(None)
-		windll.user32.EmptyClipboard()
-		windll.user32.CloseClipboard()
+		user32.OpenClipboard(None)
+		user32.EmptyClipboard()
+		user32.CloseClipboard()
 
 	def _get_monitor_coordinates(self):
 		raise NotImplementedError(".. still working on things :)")
@@ -330,31 +518,31 @@ class Robot(object):
 		SM_CXVIRTUALSCREEN = 78 # width of the virtual screen
 		SM_CYVIRTUALSCREEN = 79 # height of the virtual screen
 
-		hDesktopWnd = windll.user32.GetDesktopWindow() #Entire virtual Screen
+		hDesktopWnd = user32.GetDesktopWindow() #Entire virtual Screen
 
-		left = windll.user32.GetSystemMetrics(SM_XVIRTUALSCREEN)
-		top = windll.user32.GetSystemMetrics(SM_YVIRTUALSCREEN)
-		width = windll.user32.GetSystemMetrics(SM_CXVIRTUALSCREEN)
-		height = windll.user32.GetSystemMetrics(SM_CYVIRTUALSCREEN)
+		left = user32.GetSystemMetrics(SM_XVIRTUALSCREEN)
+		top = user32.GetSystemMetrics(SM_YVIRTUALSCREEN)
+		width = user32.GetSystemMetrics(SM_CXVIRTUALSCREEN)
+		height = user32.GetSystemMetrics(SM_CYVIRTUALSCREEN)
 
 		if bounds:
 			left, top, right, bottom = bounds
 			width = right - left 
 			height = bottom - top
 		
-		hDesktopDC = windll.user32.GetWindowDC(hDesktopWnd)
+		hDesktopDC = user32.GetWindowDC(hDesktopWnd)
 		if not hDesktopDC: print 'GetDC Failed'; sys.exit()
 		
-		hCaptureDC = windll.gdi32.CreateCompatibleDC(hDesktopDC)
+		hCaptureDC = gdi.CreateCompatibleDC(hDesktopDC)
 		if not hCaptureDC: print 'CreateCompatibleBitmap Failed'; sys.exit()
 
-		hCaptureBitmap = windll.gdi32.CreateCompatibleBitmap(hDesktopDC, width, height)
+		hCaptureBitmap = gdi.CreateCompatibleBitmap(hDesktopDC, width, height)
 		if not hCaptureBitmap: print 'CreateCompatibleBitmap Failed'; sys.exit()
 		
-		windll.gdi32.SelectObject(hCaptureDC, hCaptureBitmap)
+		gdi.SelectObject(hCaptureDC, hCaptureBitmap)
 
 		SRCCOPY = 0x00CC0020
-		windll.gdi32.BitBlt(
+		gdi.BitBlt(
 			hCaptureDC, 
 			0, 0, 
 			width, height, 
@@ -368,12 +556,12 @@ class Robot(object):
 		from PIL import Image
 		bmp_info = BITMAPINFO()
 		bmp_header = BITMAPFILEHEADER()
-		hdc = windll.user32.GetDC(None)
+		hdc = user32.GetDC(None)
 
 		bmp_info.bmiHeader.biSize = sizeof(BITMAPINFOHEADER)
 
 		DIB_RGB_COLORS = 0
-		windll.gdi32.GetDIBits(hdc, 
+		gdi.GetDIBits(hdc, 
 			hCaptureBitmap, 
 			0,0, 
 			None, byref(bmp_info), 
@@ -385,7 +573,7 @@ class Robot(object):
 		# print size
 		pBuf = (c_char * bmp_info.bmiHeader.biSizeImage)()
 
-		windll.gdi32.GetBitmapBits(hCaptureBitmap, bmp_info.bmiHeader.biSizeImage, pBuf)
+		gdi.GetBitmapBits(hCaptureBitmap, bmp_info.bmiHeader.biSizeImage, pBuf)
 
 		return Image.frombuffer('RGB', size, pBuf, 'raw', 'BGRX', 0, 1)
 
@@ -420,13 +608,13 @@ class Robot(object):
 		ip.type = INPUT_KEYBOARD
 		ip.ki.wScan = 0
 		ip.ki.time = 0
-		a = windll.user32.GetMessageExtraInfo()
+		a = user32.GetMessageExtraInfo()
 		b = cast(a, POINTER(c_ulong))
 		# ip.ki.dwExtraInfo 
 
 		ip.ki.wVk = key
 		ip.ki.dwFlags = action
-		windll.user32.SendInput(1, byref(ip), sizeof(INPUT))
+		user32.SendInput(1, byref(ip), sizeof(INPUT))
 
 	def _vk_from_char(self, key_char):
 		try:
@@ -529,7 +717,7 @@ class Robot(object):
 		startupinfo = STARTUPINFO()
 		processInformation = PROCESS_INFORMATION()
 		
-		windll.kernel32.CreateProcessA(
+		kernel32.CreateProcessA(
 			full_path, 
 			None, 
 			None,
@@ -583,15 +771,15 @@ class Robot(object):
 		titles = []
 		def enumWindowsProc(hwnd, lParam):
 			# print hwnd, lParam
-			l = windll.user32.GetWindowTextLengthA(hwnd)
+			l = user32.GetWindowTextLengthA(hwnd)
 			title = create_string_buffer(l + 1)
-			windll.user32.GetWindowTextA(
+			user32.GetWindowTextA(
 				hwnd, 
 				title,
 				l + 1
 				)
 			if lParam:
-				if windll.user32.IsWindowVisible(hwnd) == 0:
+				if user32.IsWindowVisible(hwnd) == 0:
 					#Window is not visible, don't add it to the list
 					return
 			titles.append(''.join(title).strip("\x00"))
@@ -606,9 +794,9 @@ class Robot(object):
 
 		#If we want to enumerate only visibles
 		if visible:
-			windll.user32.EnumWindows(mycallback, True)
+			user32.EnumWindows(mycallback, True)
 		else:
-			windll.user32.EnumWindows(mycallback, False)
+			user32.EnumWindows(mycallback, False)
 
 		titles = [t for t in titles if t is not ""]
 
@@ -648,7 +836,7 @@ class Robot(object):
 		display_coordinates = []
 		def _monitorEnumProc(hMonitor, hdcMonitor, lprcMonitor, dwData):
 			# print 'call result:', hMonitor, hdcMonitor, lprcMonitor, dwData
-			# print 'DC:', windll.user32.GetWindowDC(hMonitor)
+			# print 'DC:', user32.GetWindowDC(hMonitor)
 			
 			coordinates = (
 				lprcMonitor.contents.left,
@@ -672,7 +860,7 @@ class Robot(object):
 		enum_callback = MonitorEnumProc(_monitorEnumProc)
 
 		# Enumerate the windows
-		windll.user32.EnumDisplayMonitors(
+		user32.EnumDisplayMonitors(
 			None, 
 			None,
 			enum_callback,
@@ -721,11 +909,11 @@ class Robot(object):
 		# raise NotImplementedError('Not ready yet. Git outta here!')
 
 		rgb = _convert_rgb(*rgb_value)
-		hdc = windll.user32.GetDC(None)
+		hdc = user32.GetDC(None)
 		
 		x, y = coordinate
 
-		windll.gdi32.SetPixel(
+		gdi.SetPixel(
 			hdc, 
 			c_int(x),
 			c_int(y),
