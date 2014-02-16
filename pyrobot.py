@@ -339,19 +339,19 @@ class Robot(object):
 	A pure python windows automation library loosely modeled after Java's Robot Class.
 	'''
 
+	press_events = {
+		'left' :  (win32con.LEFT_DOWN, None, None, None, None),
+		'right':  (win32con.RIGHT_DOWN, None, None, None, None),
+		'middle': (win32con.MIDDLE_DOWN, None, None, None, None)
+	}
+
+	release_events = {
+		'left' :  (win32con.LEFT_UP, None, None, None, None),
+		'right':  (win32con.RIGHT_UP, None, None, None, None),
+		'middle': (win32con.MIDDLE_UP, None, None, None, None)
+	}
+
 	def __init__(self):
-		self.press_events = {
-			'left' :  (win32con.LEFT_DOWN, None, None, None, None),
-			'right':  (win32con.RIGHT_DOWN, None, None, None, None),
-			'middle': (win32con.MIDDLE_DOWN, None, None, None, None)
-		}
-
-		self.release_events = {
-			'left' :  (win32con.LEFT_UP, None, None, None, None),
-			'right':  (win32con.RIGHT_UP, None, None, None, None),
-			'middle': (win32con.MIDDLE_UP, None, None, None, None)
-		}
-
 		self.keys = KeyConsts
 
 	def set_mouse_pos(self, x, y):
@@ -387,16 +387,15 @@ class Robot(object):
 		Presses one mouse button. Left, right, or middle
 		'''
 		user32.mouse_event(
-			*self.press_events[button.lower()]
+			*press_events[button.lower()]
 		)
-		# time.sleep(.2)
 
 	def mouse_up(self, button):
 		'''
 		Releases mouse button. Left, right, or middle
 		'''
 		user32.mouse_event(
-			*self.release_events[button.lower()]
+			*release_events[button.lower()]
 		)
 
 	def click_mouse(self, button):
@@ -428,7 +427,6 @@ class Robot(object):
 		'''
 		for num in range(clicks):
 			self._scrollup() if direction.lower() == 'up' else self._scrolldown()
-
 
 	def _scrollup(self):
 		user32.mouse_event(self.win32con.WHEEL, None, None, 120, None)
@@ -473,7 +471,6 @@ class Robot(object):
 		# close it
 		user32.CloseClipboard()
 		# Technologic
-
 	def clear_clipboard(self):
 		'''
 		Clear everything out of the clipboard
@@ -505,9 +502,6 @@ class Robot(object):
 			sys.exit()
 
 		return self._make_image_from_buffer(self._get_screen_buffer(bounds))
-
-
-
 
 	def _get_screen_buffer(self, bounds=None):
 		# Grabs a DC to the entire virtual screen, but only copies to
@@ -754,10 +748,6 @@ class Robot(object):
 		'''
 		time.sleep(duration)
 
-
-
-
-
 	def _enumerate_windows(self, visible=True):
 		'''
 		Loops through the titles of all the "windows."
@@ -767,47 +757,36 @@ class Robot(object):
 		'''
 
 		# raise NotImplementedError('Not ready yet. Git outta here!')
-
+		
 		titles = []
-		def enumWindowsProc(hwnd, lParam):
-			# print hwnd, lParam
-			l = user32.GetWindowTextLengthA(hwnd)
-			title = create_string_buffer(l + 1)
-			user32.GetWindowTextA(
-				hwnd,
-				title,
-				l + 1
-				)
-			if lParam:
-				if user32.IsWindowVisible(hwnd) == 0:
-					#Window is not visible, don't add it to the list
-					return
-			titles.append(''.join(title).strip("\x00"))
+		handlers = []
+		
+		def worker(hwnd, lParam):
+			length = user32.GetWindowTextLengthW(hwnd) + 1
+			b = ctypes.create_unicode_buffer(length)
+			user32.GetWindowTextW(hwnd, b, length)
+			if visible and user32.IsWindowVisible(hwnd):
+				title = b.value
+				if title:
+					titles.append(title)
+					handlers.append(hwnd)
+			return True
 
-		BoolEnumWindowsProc = WINFUNCTYPE(
-			ctypes.c_bool,
-			ctypes.wintypes.HWND,
-			ctypes.wintypes.LPARAM
-			)
+		WNDENUMPROC = ctypes.WINFUNCTYPE(BOOL,
+										 HWND,
+										 LPARAM)
 
-		mycallback = BoolEnumWindowsProc(enumWindowsProc)
-
-		#If we want to enumerate only visibles
-		if visible:
-			user32.EnumWindows(mycallback, True)
+		if not user32.EnumWindows(WNDENUMPROC(worker), True):
+			raise ctypes.WinError()
 		else:
-			user32.EnumWindows(mycallback, False)
-
-		titles = [t for t in titles if t is not ""]
-
-		return titles
+			return handlers, titles
 
 	def wait_for_window(self, wname, timeout=0, interval=0.005):
 		if timeout < 0:
 			raise ValueError("'timeout' must be a positive number")
 		start_time = time.time()
 		while True:
-			for window in self._enumerate_windows():
+			for window in self._enumerate_windows()[1]:
 				if wname.lower() in window.lower():
 					#If the window exists return True
 					return True
@@ -818,7 +797,6 @@ class Robot(object):
 				return False
 
 			time.sleep(interval)
-
 
 	def get_display_monitors(self):
 		'''
@@ -868,7 +846,6 @@ class Robot(object):
 		)
 		return display_coordinates
 
-
 	def draw_box(self, location, rgb_value):
 		p1_x, p1_y, p2_x, p2_y = location
 
@@ -888,8 +865,6 @@ class Robot(object):
 
 			self.draw_pixel((p1_x - 1, p1_y + i), rgb_value) # Thicker left
 			self.draw_pixel((p2_x + 1, p1_y + i), rgb_value) # Thicker right
-
-
 
 	def draw_pixel(self, coordinate, rgb_value):
 		'''
@@ -925,6 +900,13 @@ class Robot(object):
 		im = ImageOps.grayscale(self.take_screenshot(self.get_display_monitors()[0]))
 		# im = ImageOps.grayscale(self.take_screenshot())
 		return im.size, im.getdata()
+
+
+class Window(Robot):
+	def __init__(self, wname):
+		super(Window, self).__init__()  #To get all the Robot stuff
+		
+		
 
 
 class RECT(ctypes.Structure):
@@ -1131,7 +1113,7 @@ def get_cpus():
 if __name__ == '__main__':
 	robot = Robot()
 	print robot._enumerate_windows()
-	print robot.wait_for_window("GitHub")
+	print robot.wait_for_window("Gita", 2)
 
 
 
