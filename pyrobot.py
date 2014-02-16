@@ -390,7 +390,7 @@ class Robot(object):
 		Releases mouse button. Left, right, or middle
 		'''
 		
-			release_events = {
+		release_events = {
 			'left' :  (win32con.LEFT_UP, None, None, None, None),
 			'right':  (win32con.RIGHT_UP, None, None, None, None),
 			'middle': (win32con.MIDDLE_UP, None, None, None, None)
