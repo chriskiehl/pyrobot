@@ -781,19 +781,34 @@ class Robot(object):
 		else:
 			return handlers, titles
 
+	def get_window_hwnd(self, wname, strict=True):
+		hwnd, win = self._enumerate_windows()
+		
+		for w in win:
+			if strict:  #Match exactly
+				if wname == w:
+					return hwnd[win.index(w)]
+			else:
+				if wname.lower() in w.lower():
+					return hwnd[win.index(w)]
+		
+		return None  #Not found
+
 	def wait_for_window(self, wname, timeout=0, interval=0.005):
 		if timeout < 0:
 			raise ValueError("'timeout' must be a positive number")
+		
 		start_time = time.time()
+		
 		while True:
 			for window in self._enumerate_windows()[1]:
 				if wname.lower() in window.lower():
-					#If the window exists return True
-					return True
+					#If the window exists return window hwnd
+					return self.get_window_hwnd(window)
 
 			if time.time() - start_time > timeout:
 				#If we passed the timeout, return False
-				#Not sure if it's best to raise an Exception though
+				#Not sure if it's best to raise None or an Exception though
 				return False
 
 			time.sleep(interval)
@@ -1113,7 +1128,7 @@ def get_cpus():
 if __name__ == '__main__':
 	robot = Robot()
 	print robot._enumerate_windows()
-	print robot.wait_for_window("Gita", 2)
+	print robot.wait_for_window("Gita")
 
 
 
