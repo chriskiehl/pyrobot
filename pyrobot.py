@@ -348,8 +348,19 @@ class Robot(object):
 	A pure python windows automation library loosely modeled after Java's Robot Class.
 	'''
 
-	def __init__(self):
-		self.keys = KeyConsts
+	def __init__(self, wname=None):
+		wname = wname if wname is not None else user32.GetDesktopWindow()
+		
+		try:
+			wname.lower()
+			hwnd = self.get_window_hwnd(wname, False)
+			if hwnd:
+				self.hwnd = hwnd
+			else:
+				raise Exception("Invalid window name/hwnd")
+		
+		except AttributeError:
+			self.hwnd = wname
 
 	def set_mouse_pos(self, x, y):
 		'''
@@ -623,14 +634,14 @@ class Robot(object):
 
 	def _vk_from_char(self, key_char):
 		try:
-			index = self.keys.key_names.index(key_char.lower())
+			index = KeyConsts.key_names.index(key_char.lower())
 		except ValueError as e:
 			print e
 			print ('Usage Note: all keys are underscor delimted, '
 				'e.g. "left_mouse_button", or "up_arrow."\n'
 				'View KeyConsts class for list of key_names')
 			sys.exit()
-		return self.keys.vk_codes[index]
+		return KeyConsts.vk_codes[index]
 
 	def _capitalize(self, letter):
 
@@ -640,8 +651,8 @@ class Robot(object):
 		self.key_release(letter)
 
 	def _get_unshifted_key(self, key):
-		index = self.keys.special_keys.index(key)
-		return self.keys.special_map[index]
+		index = KeyConsts.special_keys.index(key)
+		return KeyConsts.special_map[index]
 
 	def type_string(self, input_string, delay=.005):
 		'''
@@ -661,7 +672,7 @@ class Robot(object):
 		if ord(key) in range(65, 91):
 			# print 'Capital =', True
 			self._capitalize(key)
-		elif key in self.keys.special_keys:
+		elif key in KeyConsts.special_keys:
 			# print 'Punctuation =', True
 			normalized_key = self._get_unshifted_key(key)
 			self._capitalize(normalized_key)
@@ -932,14 +943,6 @@ class Robot(object):
 		im = ImageOps.grayscale(self.take_screenshot(self.get_display_monitors()[0]))
 		# im = ImageOps.grayscale(self.take_screenshot())
 		return im.size, im.getdata()
-
-
-class Window(Robot):
-	def __init__(self, wname):
-		super(Window, self).__init__()  #To get all the Robot stuff
-		
-		
-
 
 
 # GAH! Look not at this!
