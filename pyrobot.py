@@ -450,6 +450,7 @@ class Robot(object):
 	def move_and_click(self, x, y, button):
 		"convenience function: Move to corrdinate and click mouse"
 		self.set_mouse_pos(x,y)
+		self.click_mouse(button)
 
 	def scroll_mouse_wheel(self, direction, clicks):
 		'''
