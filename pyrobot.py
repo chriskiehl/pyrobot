@@ -101,7 +101,7 @@ class BITMAPINFO(ctypes.Structure):
 	]
 
 
-class MOUSEINPUT(Structure):
+class MOUSEINPUT(ctypes.Structure):
 	_fields_ = [
 		('dx', LONG),
 		('dy', LONG),
@@ -112,7 +112,7 @@ class MOUSEINPUT(Structure):
 	]
 
 
-class KEYBDINPUT(Structure):
+class KEYBDINPUT(ctypes.Structure):
 	_fields_ = [
 		('wVk', WORD),
 		('wScan', WORD),
@@ -122,7 +122,7 @@ class KEYBDINPUT(Structure):
 	]
 
 
-class HARDWAREINPUT(Structure):
+class HARDWAREINPUT(ctypes.Structure):
 	_fields_ = [
 		('uMsg', DWORD),
 		('wParamL', WORD),
@@ -130,7 +130,7 @@ class HARDWAREINPUT(Structure):
 	]
 
 
-class INPUT(Structure):
+class INPUT(ctypes.Structure):
 	class _I(Union):
 		_fields_ = [
 			('mi', MOUSEINPUT),
