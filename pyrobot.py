@@ -805,6 +805,12 @@ class Robot(object):
 		
 		return None  #Not found
 
+	def get_window_bounds(self, hwnd):
+		rect = RECT()
+		user32.GetWindowRect(hwnd, ctypes.byref(rect))
+		bbox = (rect.left, rect.top, rect.right, rect.bottom)
+		return bbox
+
 	def wait_for_window(self, wname, timeout=0, interval=0.005):
 		if timeout < 0:
 			raise ValueError("'timeout' must be a positive number")
