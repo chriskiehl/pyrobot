@@ -339,18 +339,6 @@ class Robot(object):
 	A pure python windows automation library loosely modeled after Java's Robot Class.
 	'''
 
-	press_events = {
-		'left' :  (win32con.LEFT_DOWN, None, None, None, None),
-		'right':  (win32con.RIGHT_DOWN, None, None, None, None),
-		'middle': (win32con.MIDDLE_DOWN, None, None, None, None)
-	}
-
-	release_events = {
-		'left' :  (win32con.LEFT_UP, None, None, None, None),
-		'right':  (win32con.RIGHT_UP, None, None, None, None),
-		'middle': (win32con.MIDDLE_UP, None, None, None, None)
-	}
-
 	def __init__(self):
 		self.keys = KeyConsts
 
@@ -386,6 +374,13 @@ class Robot(object):
 		'''
 		Presses one mouse button. Left, right, or middle
 		'''
+		
+		press_events = {
+			'left' :  (win32con.LEFT_DOWN, None, None, None, None),
+			'right':  (win32con.RIGHT_DOWN, None, None, None, None),
+			'middle': (win32con.MIDDLE_DOWN, None, None, None, None)
+		}
+		
 		user32.mouse_event(
 			*press_events[button.lower()]
 		)
@@ -394,6 +389,13 @@ class Robot(object):
 		'''
 		Releases mouse button. Left, right, or middle
 		'''
+		
+			release_events = {
+			'left' :  (win32con.LEFT_UP, None, None, None, None),
+			'right':  (win32con.RIGHT_UP, None, None, None, None),
+			'middle': (win32con.MIDDLE_UP, None, None, None, None)
+		}
+		
 		user32.mouse_event(
 			*release_events[button.lower()]
 		)
