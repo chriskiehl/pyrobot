@@ -366,7 +366,8 @@ class Robot(object):
 		'''
 		Moves mouse pointer to given screen coordinates.
 		'''
-		user32.SetCursorPos(x,y)
+		wx, wy = self.pos
+		user32.SetCursorPos(x+wx, y+wy)
 
 	def get_mouse_pos(self):
 		'''
@@ -374,17 +375,28 @@ class Robot(object):
 		'''
 		coords = pointer(c_long(0))
 		user32.GetCursorPos(coords)
-		return (coords[0], coords[1])
+		x, y = coords[0], coords[1]
+		wx, wy = self.pos
+		return x-wx, y-wy
 
-	def get_pixel(self, x, y):
+	def get_pixel(self, x=None, y=None):
 		'''
-		Returns the pixel color of the given screen coordinate
+		Returns the pixel color of the given screen coordinate or the current mouse position
 		'''
-
+		
+		if x is None or y is None:
+			x, y = self.get_mouse_pos()
+			wx, wy = self.pos
+			x, y = x+wx, y+wy
+		else:
+			wx, wy = self.pos
+			x, y = wx+x, wy+y
+		
 		RGBInt = gdi.GetPixel(
 			user32.GetDC(0),
 			x, y
 		)
+		
 		red = RGBInt & 255
 		green = (RGBInt >> 8) & 255
 		blue = (RGBInt >> 16) & 255
@@ -812,11 +824,17 @@ class Robot(object):
 		
 		return None  #Not found
 
-	def get_window_bounds(self, hwnd):
+	def get_window_bounds(self):
 		rect = RECT()
-		user32.GetWindowRect(hwnd, ctypes.byref(rect))
+		user32.GetWindowRect(self.hwnd, ctypes.byref(rect))
 		bbox = (rect.left, rect.top, rect.right, rect.bottom)
 		return bbox
+
+	def get_window_pos(self):
+		x, y, right, bottom = self.get_window_bounds()
+		return x, y
+
+	pos = property(get_window_pos)
 
 	def wait_for_window(self, wname, timeout=0, interval=0.005):
 		if timeout < 0:
@@ -1134,10 +1152,7 @@ def get_cpus():
 	return 1
 
 
-if __name__ == '__main__':
-	robot = Robot()
-	print robot._enumerate_windows()
-	print robot.wait_for_window("Gita")
+
 
 
 
