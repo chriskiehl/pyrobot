@@ -353,7 +353,7 @@ class Robot(object):
 		
 		try:
 			wname.lower()
-			hwnd = self.get_window_hwnd(wname, False)
+			hwnd = self.get_window_hwnd(wname)
 			if hwnd:
 				self.hwnd = hwnd
 			else:
@@ -803,16 +803,12 @@ class Robot(object):
 		else:
 			return handlers, titles
 
-	def get_window_hwnd(self, wname, strict=True):
+	def get_window_hwnd(self, wname):
 		hwnd, win = self._enumerate_windows()
 		
 		for w in win:
-			if strict:  #Match exactly
-				if wname == w:
-					return hwnd[win.index(w)]
-			else:
-				if wname.lower() in w.lower():
-					return hwnd[win.index(w)]
+			if wname.lower() in w.lower():
+				return hwnd[win.index(w)]
 		
 		return None  #Not found
 
