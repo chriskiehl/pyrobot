@@ -532,8 +532,8 @@ class Robot(object):
 		try:
 			from PIL import Image
 		except ImportError as e:
-			print e
-			print "Need to have PIL installed! See: effbot.org for download"
+			print(e)
+			print("Need to have PIL installed! See: effbot.org for download")
 			sys.exit()
 
 		return self._make_image_from_buffer(self._get_screen_buffer(bounds))
@@ -560,13 +560,13 @@ class Robot(object):
 			height = bottom - top
 
 		hDesktopDC = user32.GetWindowDC(hDesktopWnd)
-		if not hDesktopDC: print 'GetDC Failed'; sys.exit()
+		if not hDesktopDC: print('GetDC Failed'); sys.exit()
 
 		hCaptureDC = gdi.CreateCompatibleDC(hDesktopDC)
-		if not hCaptureDC: print 'CreateCompatibleBitmap Failed'; sys.exit()
+		if not hCaptureDC: print('CreateCompatibleBitmap Failed'); sys.exit()
 
 		hCaptureBitmap = gdi.CreateCompatibleBitmap(hDesktopDC, width, height)
-		if not hCaptureBitmap: print 'CreateCompatibleBitmap Failed'; sys.exit()
+		if not hCaptureBitmap: print('CreateCompatibleBitmap Failed'); sys.exit()
 
 		gdi.SelectObject(hCaptureDC, hCaptureBitmap)
 
@@ -599,7 +599,7 @@ class Robot(object):
 
 		bmp_info.bmiHeader.biSizeImage = bmp_info.bmiHeader.biWidth *abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount+7)/8;
 		size = (bmp_info.bmiHeader.biWidth, bmp_info.bmiHeader.biHeight )
-		# print size
+		# print(size)
 		pBuf = (c_char * bmp_info.bmiHeader.biSizeImage)()
 
 		gdi.GetBitmapBits(hCaptureBitmap, bmp_info.bmiHeader.biSizeImage, pBuf)
@@ -649,10 +649,10 @@ class Robot(object):
 		try:
 			index = KeyConsts.key_names.index(key_char.lower())
 		except ValueError as e:
-			print e
-			print ('Usage Note: all keys are underscor delimted, '
+			print(e)
+			print(('Usage Note: all keys are underscor delimted, '
 				'e.g. "left_mouse_button", or "up_arrow."\n'
-				'View KeyConsts class for list of key_names')
+				'View KeyConsts class for list of key_names'))
 			sys.exit()
 		return KeyConsts.vk_codes[index]
 
@@ -683,10 +683,10 @@ class Robot(object):
 
 	def _handle_input(self, key):
 		if ord(key) in range(65, 91):
-			# print 'Capital =', True
+			# print('Capital =', True)
 			self._capitalize(key)
 		elif key in KeyConsts.special_keys:
-			# print 'Punctuation =', True
+			# print('Punctuation =', True)
 			normalized_key = self._get_unshifted_key(key)
 			self._capitalize(normalized_key)
 		else:
@@ -871,8 +871,8 @@ class Robot(object):
 
 		display_coordinates = []
 		def _monitorEnumProc(hMonitor, hdcMonitor, lprcMonitor, dwData):
-			# print 'call result:', hMonitor, hdcMonitor, lprcMonitor, dwData
-			# print 'DC:', user32.GetWindowDC(hMonitor)
+			# print('call result:', hMonitor, hdcMonitor, lprcMonitor, dwData)
+			# print('DC:', user32.GetWindowDC(hMonitor))
 
 			coordinates = (
 				lprcMonitor.contents.left,
