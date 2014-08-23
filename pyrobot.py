@@ -650,7 +650,7 @@ class Robot(object):
       index = KeyConsts.key_names.index(key_char.lower())
     except ValueError as e:
       print(e)
-      print(('Usage Note: all keys are underscor delimted, '
+      print(('Usage Note: all keys are underscore delimited, '
         'e.g. "left_mouse_button", or "up_arrow."\n'
         'View KeyConsts class for list of key_names'))
       sys.exit()
@@ -786,7 +786,7 @@ class Robot(object):
   def _enumerate_windows(self, visible=True):
     '''
     Loops through the titles of all the "windows."
-    Spits out too much junk to to be of immidiate use.
+    Spits out too much junk to to be of immediate use.
     Keeping it here to remind me how the ctypes
     callbacks work.
     '''
