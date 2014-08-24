@@ -957,7 +957,7 @@ class Robot(object):
       c_int(x),
       c_int(y),
       rgb
-      )
+    )
 
 
 
