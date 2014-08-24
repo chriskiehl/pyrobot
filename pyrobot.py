@@ -601,7 +601,7 @@ class Robot(object):
       DIB_RGB_COLORS
     )
 
-    bmp_info.bmiHeader.biSizeImage = bmp_info.bmiHeader.biWidth *abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount+7)/8;
+    bmp_info.bmiHeader.biSizeImage = int(bmp_info.bmiHeader.biWidth *abs(bmp_info.bmiHeader.biHeight) * (bmp_info.bmiHeader.biBitCount+7)/8);
     size = (bmp_info.bmiHeader.biWidth, bmp_info.bmiHeader.biHeight )
     # print(size)
     pBuf = (c_char * bmp_info.bmiHeader.biSizeImage)()
@@ -963,8 +963,8 @@ class Robot(object):
 
 if __name__ == '__main__':
   robot = Robot()
-  robot.sleep(2)
-  robot.press_and_release(Keys.a)
+  robot.sleep(5)
+  robot.take_screenshot().save("asdf.png", "PNG")
   # for i in KeyConsts.vk_codes: print(hex(i))
 
 
