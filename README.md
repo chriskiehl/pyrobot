@@ -61,7 +61,7 @@ im = robot.take_screenshot(monitors_coords[-1]) # Coordinates of last monitor
 left = 100
 top = 430
 width = 1000
-hright = 750
+height = 750
 
 im = robot.take_screenshot((left, top, width, height))
 
