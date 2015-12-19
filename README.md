@@ -1,6 +1,12 @@
 pyrobot
 =======
 
+Hear ye, hear ye!
+-----------------
+
+PyRobot was written for fun over a long weekend. Development on this stopped long ago. If you're looking for a pure Python automation library that is actively developed and works on Windows, OSX, and linux, checkout [PyAutoGui](https://github.com/asweigart/pyautogui)!
+
+
 
 What is it?
 -----------  
